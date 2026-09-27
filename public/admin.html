@@ -234,8 +234,239 @@
   .status-btn:disabled{cursor:default;}
   .status-btn.next:not(:disabled):hover{border-color:rgba(255,255,255,.35);color:#fff;}
 
+  .order-card.is-cancelled{
+    opacity:.7;
+    border-color:rgba(255,110,90,.35);
+  }
+  .cancelled-banner{
+    margin-top:12px;
+    border:1.5px solid rgba(255,110,90,.5);
+    background:rgba(255,110,90,.1);
+    color:#ff9d8a;
+    padding:12px 14px;
+    border-radius:10px;
+  }
+  .cancelled-banner-title{
+    font-family:'Fredoka',sans-serif;
+    font-weight:600;
+    font-size:.82rem;
+    text-align:center;
+    text-transform:uppercase;
+    letter-spacing:.03em;
+  }
+  .cancelled-banner-reason{
+    margin-top:8px;
+    padding-top:8px;
+    border-top:1px solid rgba(255,110,90,.3);
+    font-family:'Manrope',sans-serif;
+    font-weight:600;
+    font-size:.8rem;
+    text-transform:none;
+    letter-spacing:normal;
+    line-height:1.5;
+    color:var(--text);
+  }
+  .cancelled-banner-reason strong{color:#ff9d8a;}
+  .cancel-row{
+    margin-top:8px;
+    text-align:right;
+  }
+  .cancel-btn{
+    border:1.5px solid rgba(255,110,90,.4);
+    background:transparent;
+    color:#ff9d8a;
+    font-family:'Manrope',sans-serif;
+    font-weight:600;
+    font-size:.72rem;
+    padding:6px 12px;
+    border-radius:999px;
+    cursor:pointer;
+  }
+  .cancel-btn:hover{background:rgba(255,110,90,.12);}
+
+  .payment-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    font-family:'Manrope',sans-serif;
+    font-weight:700;
+    font-size:.72rem;
+    padding:4px 10px;
+    border-radius:999px;
+    text-transform:uppercase;
+    letter-spacing:.02em;
+    margin-top:6px;
+  }
+  .payment-badge.pb-cash{border:1.5px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);background:rgba(255,255,255,.06);}
+  .payment-badge.pb-approved{border:1.5px solid rgba(37,211,102,.4);color:var(--ok);background:rgba(37,211,102,.1);}
+  .payment-badge.pb-pending{border:1.5px solid rgba(247,181,0,.4);color:#f7b500;background:rgba(247,181,0,.1);}
+  .payment-badge.pb-rejected{border:1.5px solid rgba(255,110,90,.4);color:#ff9d8a;background:rgba(255,110,90,.1);}
+
   @media (max-width:420px){
     .status-row.cols-3,.status-row.cols-4{grid-template-columns:repeat(2,1fr);}
+  }
+
+  .shop-toggle{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    flex-wrap:wrap;
+    border:1.5px solid rgba(37,211,102,.4);
+    background:rgba(37,211,102,.1);
+    color:var(--ok);
+    border-radius:14px;
+    padding:12px 16px;
+    margin-bottom:16px;
+    font-weight:700;
+  }
+  .shop-toggle.is-closed{
+    border-color:rgba(255,110,90,.4);
+    background:rgba(255,110,90,.1);
+    color:#ff9d8a;
+  }
+  .shop-toggle-btn{
+    border:1.5px solid currentColor;
+    background:transparent;
+    color:inherit;
+    font-family:'Manrope',sans-serif;
+    font-weight:700;
+    font-size:.82rem;
+    padding:8px 14px;
+    border-radius:999px;
+    cursor:pointer;
+    flex:none;
+  }
+  .shop-toggle-btn:hover{background:rgba(255,255,255,.08);}
+  .shop-toggle-btn:disabled{opacity:.6;cursor:default;}
+
+  /* ---------- tabs: Pedidos (pantalla del local/TV) / Productos ---------- */
+  .admin-tabs{
+    display:flex;
+    gap:8px;
+    margin-bottom:16px;
+  }
+  .admin-tab{
+    border:1.5px solid var(--line);
+    background:var(--surface);
+    color:var(--text-muted);
+    font-family:'Manrope',sans-serif;
+    font-weight:700;
+    font-size:.85rem;
+    padding:9px 18px;
+    border-radius:999px;
+    cursor:pointer;
+  }
+  .admin-tab.active{
+    border-color:var(--yellow);
+    background:rgba(247,181,0,.14);
+    color:var(--text);
+  }
+  .products-hint{
+    color:var(--text-muted);
+    font-size:.85rem;
+    line-height:1.55;
+    margin-bottom:18px;
+  }
+  .products-cat-label{
+    font-weight:800;
+    font-size:.76rem;
+    letter-spacing:.07em;
+    text-transform:uppercase;
+    color:var(--text-muted);
+    margin:20px 0 8px;
+  }
+  .products-cat-label:first-child{margin-top:0;}
+  .product-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding:12px 14px;
+    border:1px solid var(--line);
+    border-radius:12px;
+    background:var(--surface);
+    margin-bottom:8px;
+  }
+  .product-row-name{font-weight:600;color:var(--text);}
+  .product-toggle-btn{
+    border:1.5px solid rgba(37,211,102,.4);
+    background:rgba(37,211,102,.1);
+    color:var(--ok);
+    font-family:'Manrope',sans-serif;
+    font-weight:700;
+    font-size:.78rem;
+    padding:8px 14px;
+    border-radius:999px;
+    cursor:pointer;
+    flex:none;
+    white-space:nowrap;
+  }
+  .product-toggle-btn.is-hidden{
+    border-color:rgba(255,110,90,.4);
+    background:rgba(255,110,90,.1);
+    color:#ff9d8a;
+  }
+  .product-toggle-btn:disabled{opacity:.6;cursor:default;}
+
+  /* ---------- cartel propio (reemplaza confirm/prompt/alert del navegador) ---------- */
+  .modal-overlay{
+    position:fixed;inset:0;
+    background:rgba(0,0,0,.6);
+    display:flex;align-items:center;justify-content:center;
+    padding:20px;
+    z-index:1000;
+  }
+  .modal-overlay[hidden]{display:none;}
+  .modal-box{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:20px;
+    max-width:420px;
+    width:100%;
+    box-shadow:0 20px 50px rgba(0,0,0,.5);
+  }
+  .modal-msg{
+    color:var(--text);
+    font-size:.92rem;
+    line-height:1.55;
+    white-space:pre-wrap;
+    margin-bottom:14px;
+  }
+  .modal-input{
+    width:100%;
+    background:var(--bg);
+    border:1.5px solid var(--line);
+    border-radius:10px;
+    color:var(--text);
+    font-family:'Manrope',sans-serif;
+    font-size:.9rem;
+    padding:10px 12px;
+    margin-bottom:16px;
+    resize:vertical;
+    min-height:70px;
+    box-sizing:border-box;
+  }
+  .modal-input:focus{outline:none;border-color:var(--yellow);}
+  .modal-actions{
+    display:flex;justify-content:flex-end;gap:10px;
+  }
+  .modal-btn{
+    border:1.5px solid var(--line);
+    background:transparent;
+    color:var(--text);
+    font-family:'Manrope',sans-serif;
+    font-weight:700;
+    font-size:.85rem;
+    padding:9px 18px;
+    border-radius:999px;
+    cursor:pointer;
+  }
+  .modal-btn.primary{
+    border-color:var(--yellow);
+    background:var(--yellow);
+    color:#241c08;
   }
 </style>
 </head>
@@ -249,6 +480,17 @@
   <div class="refresh-note" id="refreshNote"></div>
 </header>
 
+<div class="modal-overlay" id="modalOverlay" hidden>
+  <div class="modal-box">
+    <div class="modal-msg" id="modalMsg"></div>
+    <textarea class="modal-input" id="modalInput" hidden></textarea>
+    <div class="modal-actions">
+      <button type="button" class="modal-btn" id="modalCancelBtn">Cancelar</button>
+      <button type="button" class="modal-btn primary" id="modalOkBtn">Aceptar</button>
+    </div>
+  </div>
+</div>
+
 <div class="wrap">
   <div class="gate" id="gate">
     <h2>Ingresá la clave</h2>
@@ -259,8 +501,26 @@
   </div>
 
   <div id="ordersView" hidden>
-    <div class="filters" id="filters"></div>
-    <div id="ordersList"></div>
+    <div class="admin-tabs" id="adminTabs">
+      <button type="button" class="admin-tab active" data-tab="pedidos">Pedidos</button>
+      <button type="button" class="admin-tab" data-tab="productos">Productos</button>
+    </div>
+
+    <div id="pedidosPanel">
+      <div class="shop-toggle" id="shopToggle">
+        <span id="shopToggleLabel">Local: cargando…</span>
+        <button type="button" class="shop-toggle-btn" id="shopToggleBtn">Cambiar</button>
+      </div>
+      <div class="filters" id="filters"></div>
+      <div id="ordersList"></div>
+    </div>
+
+    <div id="productosPanel" hidden>
+      <p class="products-hint">Marcá como "Oculto" lo que no tengan disponible ahora mismo — desaparece
+        del menú de pedidos al toque, sin tocar código ni esperar un despliegue. Volvé a marcarlo
+        "Visible" apenas lo tengan de nuevo.</p>
+      <div id="productsList"></div>
+    </div>
   </div>
 </div>
 
@@ -274,15 +534,28 @@
     pickup: ["preparando", "listo_retiro", "entregado"],
     delivery: ["preparando", "listo", "enviando", "entregado"],
   };
-  var STATUSES = ["preparando", "listo", "listo_retiro", "enviando", "entregado"];
+  // Un pedido se puede cancelar hasta que llega a "listo"/"listo para
+  // retiro" — una vez que pasó ese paso (yendo en camino, o entregado) ya
+  // es tarde para cancelarlo (el backend aplica la misma regla).
+  var CANCELLABLE_UNTIL = {
+    pickup: "listo_retiro",
+    delivery: "listo",
+  };
+  var STATUSES = ["preparando", "listo", "listo_retiro", "enviando", "entregado", "cancelado"];
   var STATUS_LABEL = {
     preparando: "Preparando",
     listo: "Listo",
     listo_retiro: "Listo para retiro",
     enviando: "Llevando el pedido",
-    entregado: "Entregado"
+    entregado: "Entregado",
+    cancelado: "Cancelado"
   };
   var POLL_MS = 12000;
+
+  var shopToggle = document.getElementById("shopToggle");
+  var shopToggleLabel = document.getElementById("shopToggleLabel");
+  var shopToggleBtn = document.getElementById("shopToggleBtn");
+  var shopStatus = "abierto";
 
   var gate = document.getElementById("gate");
   var gateInput = document.getElementById("gateInput");
@@ -296,6 +569,56 @@
   var adminKey = sessionStorage.getItem("psAdminKey") || "";
   var activeFilter = "todos";
   var pollTimer = null;
+
+  // ---------- cartel propio (reemplaza confirm/prompt/alert del navegador) ----------
+  // Los diálogos nativos del navegador (confirm/prompt/alert) quedan
+  // bloqueados sin avisar — no aparecen, y confirm()/prompt() devuelven
+  // false/null al toque — cuando la página se muestra adentro de un iframe
+  // con "sandbox" (como en una vista previa/demo). Este cartel propio
+  // funciona siempre, tanto ahí como en el sitio real ya desplegado.
+  var modalOverlay = document.getElementById("modalOverlay");
+  var modalMsg = document.getElementById("modalMsg");
+  var modalInput = document.getElementById("modalInput");
+  var modalCancelBtn = document.getElementById("modalCancelBtn");
+  var modalOkBtn = document.getElementById("modalOkBtn");
+
+  function showModal(opts){
+    return new Promise(function(resolve){
+      modalMsg.textContent = opts.message;
+      modalInput.hidden = !opts.withInput;
+      modalInput.value = opts.defaultValue || "";
+      modalOkBtn.textContent = opts.okLabel || "Aceptar";
+      modalCancelBtn.hidden = !!opts.hideCancel;
+      modalCancelBtn.textContent = opts.cancelLabel || "Cancelar";
+      modalOverlay.hidden = false;
+      if (opts.withInput) setTimeout(function(){ modalInput.focus(); }, 0);
+
+      function cleanup(result){
+        modalOverlay.hidden = true;
+        modalOkBtn.removeEventListener("click", onOk);
+        modalCancelBtn.removeEventListener("click", onCancel);
+        modalInput.removeEventListener("keydown", onKeydown);
+        resolve(result);
+      }
+      function onOk(){ cleanup(opts.withInput ? modalInput.value : true); }
+      function onCancel(){ cleanup(opts.withInput ? null : false); }
+      function onKeydown(e){
+        if (e.key === "Enter" && !e.shiftKey && opts.withInput){ e.preventDefault(); onOk(); }
+      }
+      modalOkBtn.addEventListener("click", onOk);
+      modalCancelBtn.addEventListener("click", onCancel);
+      modalInput.addEventListener("keydown", onKeydown);
+    });
+  }
+  function showAlert(message){
+    return showModal({ message: message, hideCancel: true });
+  }
+  function showConfirm(message){
+    return showModal({ message: message });
+  }
+  function showPrompt(message, defaultValue){
+    return showModal({ message: message, withInput: true, defaultValue: defaultValue });
+  }
 
   function fmt(n){
     return "$" + Math.round(n).toLocaleString("es-AR");
@@ -351,21 +674,38 @@
 
     var time = new Date(o.created_at).toLocaleString("es-AR", { day:"2-digit", month:"2-digit", hour:"2-digit", minute:"2-digit" });
 
+    var isCancelled = o.status === "cancelado";
     var flow = FLOWS[o.delivery_method] || FLOWS.pickup;
     var currentIndex = flow.indexOf(o.status);
-    var statusButtons = flow.map(function(s, i){
-      var isCurrent = i === currentIndex;
-      var isDone = i < currentIndex;
-      var isNext = i === currentIndex + 1;
-      var cls = "status-btn";
-      if (isCurrent) cls += " current";
-      else if (isDone) cls += " done";
-      else if (isNext) cls += " next";
-      else cls += " locked";
-      var clickable = isNext;
-      var label = (isDone ? "✓ " : "") + STATUS_LABEL[s];
-      return '<button type="button" class="' + cls + '" data-status="' + s + '" data-id="' + o.id + '"' + (clickable ? "" : " disabled") + '>' + label + '</button>';
-    }).join("");
+    var statusRowHtml;
+    if (isCancelled){
+      var reasonHtml = o.cancel_reason
+        ? '<div class="cancelled-banner-reason"><strong>Motivo:</strong> ' + escapeHtml(o.cancel_reason) + '</div>'
+        : '<div class="cancelled-banner-reason"><strong>Motivo:</strong> sin registrar (se canceló antes de este cambio, o se dejó en blanco).</div>';
+      statusRowHtml = '<div class="cancelled-banner"><div class="cancelled-banner-title">✕ Pedido cancelado</div>' + reasonHtml + '</div>';
+    } else {
+      var statusButtons = flow.map(function(s, i){
+        var isCurrent = i === currentIndex;
+        var isDone = i < currentIndex;
+        var isNext = i === currentIndex + 1;
+        var cls = "status-btn";
+        if (isCurrent) cls += " current";
+        else if (isDone) cls += " done";
+        else if (isNext) cls += " next";
+        else cls += " locked";
+        var clickable = isNext;
+        var label = (isDone ? "✓ " : "") + STATUS_LABEL[s];
+        return '<button type="button" class="' + cls + '" data-status="' + s + '" data-id="' + o.id + '"' + (clickable ? "" : " disabled") + '>' + label + '</button>';
+      }).join("");
+      statusRowHtml = '<div class="status-row cols-' + flow.length + '">' + statusButtons + '</div>';
+      // Cancelling is only offered up through "listo"/"listo_retiro" — once
+      // the order is on its way (or delivered), it's too late to cancel.
+      var cancelCutoff = CANCELLABLE_UNTIL[o.delivery_method] || CANCELLABLE_UNTIL.pickup;
+      var cancelCutoffIndex = flow.indexOf(cancelCutoff);
+      if (currentIndex <= cancelCutoffIndex){
+        statusRowHtml += '<div class="cancel-row"><button type="button" class="cancel-btn" data-cancel-id="' + o.id + '">Cancelar pedido</button></div>';
+      }
+    }
 
     var phoneHref = (o.customer_phone || "").replace(/[^\d+]/g, "");
     var customerHtml =
@@ -375,24 +715,88 @@
       '</div>';
 
     return (
-      '<div class="order-card" data-order-id="' + o.id + '">' +
+      '<div class="order-card' + (isCancelled ? " is-cancelled" : "") + '" data-order-id="' + o.id + '">' +
         '<div class="order-head">' +
           '<div class="order-num">Pedido N° ' + o.id + '</div>' +
           '<div class="order-time">' + time + '</div>' +
         '</div>' +
         customerHtml +
+        paymentBadgeHtml(o) +
         '<div class="order-lines">' + itemsHtml + '</div>' +
         '<div class="order-meta">' + metaLines.join("<br>") + '</div>' +
         '<div class="order-total-row"><span>Total</span><span class="amount">' + fmt(o.total) + '</span></div>' +
-        '<div class="status-row cols-' + flow.length + '">' + statusButtons + '</div>' +
+        statusRowHtml +
       '</div>'
     );
+  }
+
+  // Shows how (and whether) the order was already paid. "efectivo" orders
+  // pay when they're handed over, same as always, so there's nothing to
+  // confirm — only Mercado Pago orders get a badge with their real status,
+  // which functions/api/mp-webhook.js keeps up to date on its own.
+  function paymentBadgeHtml(o){
+    if ((o.payment_method || "efectivo") !== "mercadopago"){
+      return '<div class="payment-badge pb-cash">💵 Paga al recibir</div>';
+    }
+    var status = o.payment_status || "pendiente";
+    if (status === "approved"){
+      return '<div class="payment-badge pb-approved">✅ Pagado online (Mercado Pago)</div>';
+    }
+    if (status === "pending" || status === "in_process" || status === "pendiente"){
+      return '<div class="payment-badge pb-pending">⏳ Pago online pendiente</div>';
+    }
+    if (status === "rejected" || status === "cancelled" || status === "refunded" || status === "charged_back"){
+      return '<div class="payment-badge pb-rejected">❌ Pago online ' + escapeHtml(status) + '</div>';
+    }
+    return '<div class="payment-badge pb-pending">⏳ Pago online: ' + escapeHtml(status) + '</div>';
   }
 
   function escapeHtml(str){
     var div = document.createElement("div");
     div.textContent = str;
     return div.innerHTML;
+  }
+
+  // Best-effort formatting of an Argentine phone number into what a wa.me
+  // link needs (country code 54 + mobile "9" + area code + number).
+  // Customers type their number every which way in the order form, so this
+  // is only a best effort — if it comes out wrong, WhatsApp still opens and
+  // whoever's sending can fix the number by hand before hitting send.
+  function toWaNumber(raw){
+    var d = String(raw || "").replace(/\D/g, "");
+    if (!d) return null;
+    if (d.charAt(0) === "0") d = d.slice(1);       // drop a leading trunk "0"
+    if (d.slice(0, 2) === "54") d = d.slice(2);    // drop the country code if already typed
+    if (d.charAt(0) === "9") d = d.slice(1);       // drop a "9" if already typed
+    if (!d) return null;
+    return "549" + d;
+  }
+
+  // Default WhatsApp message for each status the customer should hear
+  // about. This only opens WhatsApp with the text ready to go — nothing
+  // sends on its own, so whoever's running the panel can edit it or just
+  // not send it. "preparando" has no message (it's the starting status, no
+  // button moves an order into it) and neither does an unlisted status.
+  function statusWaMessage(o, status, cancelReason){
+    var num = "N° " + o.id;
+    if (status === "listo"){
+      return "¡Hola! Tu pedido " + num + " de Punto Sandwich ya está listo, en breve sale hacia tu domicilio 🛵";
+    }
+    if (status === "listo_retiro"){
+      return "¡Hola! Tu pedido " + num + " de Punto Sandwich ya está listo para retirar 📦";
+    }
+    if (status === "enviando"){
+      return "¡Tu pedido " + num + " ya salió en camino! 🛵";
+    }
+    if (status === "entregado"){
+      return "¡Gracias por tu pedido " + num + "! Que lo disfrutes 🙌";
+    }
+    if (status === "cancelado"){
+      var msg = "Hola, te escribimos para avisarte que tu pedido " + num + " fue cancelado.";
+      if (cancelReason) msg += " Motivo: " + cancelReason + ".";
+      return msg + " Cualquier consulta, escribinos por acá.";
+    }
+    return null;
   }
 
   function renderOrders(){
@@ -407,21 +811,61 @@
       btn.addEventListener("click", function(){
         var id = btn.getAttribute("data-id");
         var status = btn.getAttribute("data-status");
-        updateStatus(id, status);
+        var ord = (window.__orders || []).filter(function(o){ return String(o.id) === String(id); })[0];
+        updateStatus(id, status, ord);
+      });
+    });
+    ordersList.querySelectorAll(".cancel-btn").forEach(function(btn){
+      btn.addEventListener("click", async function(){
+        var id = btn.getAttribute("data-cancel-id");
+        var ord = (window.__orders || []).filter(function(o){ return String(o.id) === String(id); })[0];
+        var wasPaidOnline = ord && ord.payment_method === "mercadopago" && ord.payment_status === "approved";
+        var hint = "Contá el motivo de la cancelación (se lo va a mostrar acá en el panel y al cliente por WhatsApp).";
+        if (wasPaidOnline){
+          hint += "\n\nOjo: este pedido ya está PAGADO por Mercado Pago — cancelarlo acá NO devuelve el dinero solo. Contá también si ya reintegraste el dinero (el reintegro se hace aparte, desde Mercado Pago).";
+        }
+        var reason = await showPrompt(hint, "");
+        if (reason === null) return; // se arrepintió, no cancela nada
+        reason = reason.trim();
+        if (!reason){
+          await showAlert("Hace falta escribir un motivo para cancelar el pedido.");
+          return;
+        }
+        var confirmed = await showConfirm("¿Confirmás cancelar el pedido N° " + id + " con este motivo?\n\n\"" + reason + "\"\n\nEsto no se puede deshacer.");
+        if (!confirmed) return;
+        updateStatus(id, "cancelado", ord, reason);
       });
     });
   }
 
-  function updateStatus(id, status){
+  function updateStatus(id, status, ord, cancelReason){
+    // Open the WhatsApp tab synchronously, inside this same click — same
+    // trick as the customer-facing page uses — so the browser doesn't treat
+    // it as a blocked popup once it's opened after the PATCH finishes async.
+    var waMsg = ord ? statusWaMessage(ord, status, cancelReason) : null;
+    var waWindow = null;
+    if (waMsg){
+      try { waWindow = window.open("", "_blank"); } catch (err) { waWindow = null; }
+    }
+
     authFetch("/api/orders/" + id, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status: status })
+      body: JSON.stringify({ status: status, cancelReason: cancelReason || undefined })
     }).then(function(resp){
       if (!resp.ok) throw new Error("update failed");
+      if (waWindow && waMsg){
+        var phone = toWaNumber(ord.customer_phone);
+        if (phone){
+          waWindow.location.href = "https://wa.me/" + phone + "?text=" + encodeURIComponent(waMsg);
+        } else if (!waWindow.closed) {
+          waWindow.close();
+        }
+      }
       return loadOrders();
     }).catch(function(){
-      alert("No se pudo actualizar el estado. Puede que otra persona ya lo haya cambiado — se va a refrescar la pantalla.");
+      if (waWindow && !waWindow.closed) { try { waWindow.close(); } catch (err) {} }
+      showAlert("No se pudo actualizar el estado. Puede que otra persona ya lo haya cambiado — se va a refrescar la pantalla.");
       loadOrders();
     });
   }
@@ -442,6 +886,143 @@
     });
   }
 
+  function renderShopStatus(){
+    var closed = shopStatus === "cerrado";
+    shopToggle.classList.toggle("is-closed", closed);
+    shopToggleLabel.textContent = closed
+      ? "🔴 Local cerrado — no se pueden hacer pedidos"
+      : "🟢 Local abierto — recibiendo pedidos";
+    shopToggleBtn.textContent = closed ? "Abrir el local" : "Cerrar el local";
+  }
+
+  function loadShopStatus(){
+    return authFetch("/api/shop-status").then(function(resp){ return resp.json(); }).then(function(data){
+      shopStatus = data.status === "cerrado" ? "cerrado" : "abierto";
+      renderShopStatus();
+    }).catch(function(){});
+  }
+
+  shopToggleBtn.addEventListener("click", async function(){
+    var next = shopStatus === "cerrado" ? "abierto" : "cerrado";
+    var msg = next === "cerrado"
+      ? "¿Cerrar el local? La página va a avisar que no se puede pedir hasta que lo vuelvas a abrir."
+      : "¿Abrir el local para recibir pedidos de nuevo?";
+    var confirmed = await showConfirm(msg);
+    if (!confirmed) return;
+    shopToggleBtn.disabled = true;
+    authFetch("/api/shop-status", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status: next })
+    }).then(function(resp){
+      if (!resp.ok) throw new Error("failed");
+      return resp.json();
+    }).then(function(data){
+      shopStatus = data.status === "cerrado" ? "cerrado" : "abierto";
+      renderShopStatus();
+    }).catch(function(){
+      showAlert("No se pudo cambiar el estado del local. Probá de nuevo.");
+    }).then(function(){
+      shopToggleBtn.disabled = false;
+    });
+  });
+
+  // Mismo catálogo que public/index.html (id + nombre) — se duplica acá
+  // a propósito, mismo criterio que el resto de las funciones de este
+  // proyecto (ver el comentario de ensureSchema en functions/api/orders.js):
+  // un archivo autocontenido es más simple de mantener que compartir un
+  // módulo entre dos páginas distintas para una lista tan chica. Si se
+  // agrega un producto nuevo en el menú, agregarlo acá también.
+  var PRODUCTS = [
+    {id:"milanesa-carne", name:"Punto Milanesa Carne", cat:"Puntos"},
+    {id:"milanesa-napolitana", name:"Punto Milanesa Napolitana", cat:"Puntos"},
+    {id:"milanesa-pollo", name:"Punto Milanesa Pollo", cat:"Puntos"},
+    {id:"lomo", name:"Punto Lomo", cat:"Puntos"},
+    {id:"bife-ancho", name:"Punto Bife Ancho", cat:"Puntos"},
+    {id:"bondiola", name:"Punto Bondiola", cat:"Puntos"},
+    {id:"molleja", name:"Punto Molleja", cat:"Puntos"},
+    {id:"hamburguesa", name:"Punto Burger Carne", cat:"Hamburguesas"},
+    {id:"hamburguesa-pollo", name:"Punto Burger Pollo", cat:"Hamburguesas"},
+    {id:"pizza-muzza", name:"Muzza", cat:"Pizzas"},
+    {id:"pizza-especial", name:"Especial", cat:"Pizzas"},
+    {id:"pizza-primavera", name:"Primavera", cat:"Pizzas"},
+    {id:"pizza-napolitana", name:"Napolitana", cat:"Pizzas"},
+    {id:"pizza-paisana", name:"Paisana", cat:"Pizzas"},
+    {id:"papas-fritas", name:"Papas Fritas", cat:"Extras"},
+    {id:"papas-sazonadas", name:"Papas Sazonadas", cat:"Extras"}
+  ];
+  var hiddenProducts = [];
+  var productsLoaded = false;
+
+  var adminTabs = document.getElementById("adminTabs");
+  var pedidosPanel = document.getElementById("pedidosPanel");
+  var productosPanel = document.getElementById("productosPanel");
+  var productsList = document.getElementById("productsList");
+
+  if (adminTabs){
+    Array.prototype.forEach.call(adminTabs.querySelectorAll(".admin-tab"), function(tab){
+      tab.addEventListener("click", function(){
+        Array.prototype.forEach.call(adminTabs.querySelectorAll(".admin-tab"), function(t){ t.classList.remove("active"); });
+        tab.classList.add("active");
+        var key = tab.getAttribute("data-tab");
+        pedidosPanel.hidden = key !== "pedidos";
+        productosPanel.hidden = key !== "productos";
+        if (key === "productos") loadProducts();
+      });
+    });
+  }
+
+  function renderProducts(){
+    var cats = {};
+    var order = [];
+    PRODUCTS.forEach(function(p){
+      if (!cats[p.cat]){ cats[p.cat] = []; order.push(p.cat); }
+      cats[p.cat].push(p);
+    });
+    var html = order.map(function(cat){
+      var rows = cats[cat].map(function(p){
+        var isHidden = hiddenProducts.indexOf(p.id) !== -1;
+        return '<div class="product-row">' +
+          '<span class="product-row-name">' + escapeHtml(p.name) + '</span>' +
+          '<button type="button" class="product-toggle-btn' + (isHidden ? ' is-hidden' : '') + '" data-id="' + p.id + '">' +
+            (isHidden ? "🔴 Oculto — mostrar" : "🟢 Visible — ocultar") +
+          '</button>' +
+        '</div>';
+      }).join("");
+      return '<div class="products-cat-label">' + cat + '</div>' + rows;
+    }).join("");
+    productsList.innerHTML = html;
+    Array.prototype.forEach.call(productsList.querySelectorAll(".product-toggle-btn"), function(btn){
+      btn.addEventListener("click", function(){
+        var id = btn.getAttribute("data-id");
+        var nextHidden = hiddenProducts.indexOf(id) === -1;
+        btn.disabled = true;
+        authFetch("/api/products-visibility", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id: id, hidden: nextHidden })
+        }).then(function(resp){
+          if (!resp.ok) throw new Error("failed");
+          return resp.json();
+        }).then(function(data){
+          hiddenProducts = data.hidden || [];
+          renderProducts();
+        }).catch(function(){
+          showAlert("No se pudo cambiar la visibilidad de \"" + id + "\". Probá de nuevo.");
+          btn.disabled = false;
+        });
+      });
+    });
+  }
+
+  function loadProducts(){
+    return authFetch("/api/products-visibility").then(function(resp){ return resp.json(); }).then(function(data){
+      hiddenProducts = data.hidden || [];
+      productsLoaded = true;
+      renderProducts();
+    }).catch(function(){});
+  }
+
   function showGate(err){
     gate.hidden = false;
     ordersView.hidden = true;
@@ -454,8 +1035,12 @@
     gate.hidden = true;
     ordersView.hidden = false;
     loadOrders();
+    loadShopStatus();
     if (pollTimer) clearInterval(pollTimer);
-    pollTimer = setInterval(loadOrders, POLL_MS);
+    pollTimer = setInterval(function(){
+      loadOrders();
+      loadShopStatus();
+    }, POLL_MS);
   }
 
   function tryKey(key){
