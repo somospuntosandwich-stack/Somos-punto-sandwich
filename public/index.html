@@ -1293,6 +1293,12 @@
   </div>
 
   <div class="grid" id="extrasGrid"></div>
+
+  <div class="section-head section-head-2">
+    <h2>Bebidas</h2>
+  </div>
+
+  <div class="grid" id="bebidasGrid"></div>
 </main>
 
 <section class="contact">
@@ -1436,7 +1442,7 @@
         var card = document.getElementById("card-" + id);
         if (card) card.remove();
       });
-      ["menuGrid", "hambGrid", "pizzaGrid", "extrasGrid"].forEach(function(gridId){
+      ["menuGrid", "hambGrid", "pizzaGrid", "extrasGrid", "bebidasGrid"].forEach(function(gridId){
         var grid = document.getElementById(gridId);
         if (grid && grid.children.length === 0){
           grid.style.display = "none";
@@ -1714,7 +1720,27 @@
       sizes:[{key:"300g", label:"300 g", price:10000},{key:"500g", label:"500 g", price:15000}]}
   ];
 
-  var ALL_ITEMS = ITEMS.concat(HAMBURGUESAS, PIZZAS, EXTRAS);
+  // Bebidas — sin foto y sin descripción a propósito: es una lista simple de
+  // nombre + tamaño/precio (ver buildCard: noPhoto:true salta tanto el
+  // recuadro de foto como el texto de ingredientes).
+  var BEBIDAS = [
+    {id:"jugo-fresh", name:"Jugo Fresh", noPhoto:true, fries:false,
+      sizes:[{key:"500ml", label:"500 ml", price:2000},{key:"1.5l", label:"1.5 L", price:3500}]},
+    {id:"gaseosa-pepsi-familia", name:"Pepsi / 7UP / Paso de los Toros / Mirinda / H2OH!", noPhoto:true, fries:false,
+      sizes:[{key:"500ml", label:"500 ml", price:2500},{key:"1.5l", label:"1.5 L", price:4000}]},
+    {id:"pepsi-lata", name:"Pepsi Lata", noPhoto:true, fries:false,
+      sizes:[{key:"lata", label:"Lata", price:2000}]},
+    {id:"gatorade", name:"Gatorade", noPhoto:true, fries:false,
+      sizes:[{key:"500ml", label:"500 ml", price:2500},{key:"750ml", label:"750 ml", price:4000}]},
+    {id:"gaseosa-coca-familia", name:"Coca-Cola / Sprite / Fanta", noPhoto:true, fries:false,
+      sizes:[{key:"500ml", label:"500 ml", price:3000},{key:"1.5l", label:"1.5 L", price:5500},{key:"2.25l", label:"2.25 L", price:7000}]},
+    {id:"speed", name:"Speed", noPhoto:true, fries:false,
+      sizes:[{key:"chica", label:"Chica", price:2500},{key:"grande", label:"Grande", price:4000}]},
+    {id:"agua", name:"Agua", noPhoto:true, fries:false,
+      sizes:[{key:"500ml", label:"500 ml", price:3000}]}
+  ];
+
+  var ALL_ITEMS = ITEMS.concat(HAMBURGUESAS, PIZZAS, EXTRAS, BEBIDAS);
 
   var cart = {}; // "itemId__sizeKey" or "itemId__sizeKey+addonKey" -> qty
   var cardSelection = {}; // itemId -> currently chosen size key in the grid card
@@ -1844,9 +1870,11 @@
       soloPriceHtml = '<div class="solo-price">' + fmtPrice(item.sizes[0].price) + '</div>';
     }
 
-    var ingHtml = item.ing
-      ? '<p class="ing">' + item.ing + '</p>'
-      : '<p class="ing ing-pending">Ingredientes próximamente</p>';
+    var ingHtml = item.noPhoto
+      ? "" // bebidas: sin descripción, solo nombre + precio/tamaño
+      : (item.ing
+        ? '<p class="ing">' + item.ing + '</p>'
+        : '<p class="ing ing-pending">Ingredientes próximamente</p>');
 
     // Fries come included with these items at no extra cost — this just
     // lets the customer pick which kind, it's not an addon (no price change).
@@ -1875,9 +1903,11 @@
     }
 
     var photoSrc = PHOTOS[item.id];
-    var photoHtml = photoSrc
-      ? '<div class="photo has-photo" tabindex="0" role="button" aria-label="Ver foto de ' + item.name + ' en grande"><img src="' + photoSrc + '" alt="' + item.name + '" loading="lazy"></div>'
-      : '<div class="photo">' + photoIcon + '<span>Foto próximamente</span></div>';
+    var photoHtml = item.noPhoto
+      ? "" // productos sin foto por diseño (bebidas): lista simple, sin cartel de "Foto próximamente"
+      : (photoSrc
+        ? '<div class="photo has-photo" tabindex="0" role="button" aria-label="Ver foto de ' + item.name + ' en grande"><img src="' + photoSrc + '" alt="' + item.name + '" loading="lazy"></div>'
+        : '<div class="photo">' + photoIcon + '<span>Foto próximamente</span></div>');
 
     card.innerHTML =
       photoHtml +
@@ -1967,6 +1997,7 @@
   renderSection(HAMBURGUESAS, "hambGrid");
   renderSection(PIZZAS, "pizzaGrid");
   renderSection(EXTRAS, "extrasGrid");
+  renderSection(BEBIDAS, "bebidasGrid");
 
   var cartBar = document.getElementById("cartBar");
   var barCountLine = document.getElementById("barCountLine");
