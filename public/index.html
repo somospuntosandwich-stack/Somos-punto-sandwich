@@ -1435,13 +1435,58 @@
   // el DOM para cuando esto responde, así que simplemente se quitan las que
   // correspondan; si una sección queda sin ninguna, se oculta el título
   // también para no dejar un encabezado vacío.
+  // Un id "oculto" puede ser:
+  //  - el id de un producto entero ("sprite") -> se saca toda la tarjeta.
+  //  - "productoId__tamaño" ("sprite__500ml") -> se saca solo esa opción de
+  //    tamaño (por ejemplo, si hay Sprite de 1.5 L pero no de 500 ml). Si
+  //    terminan ocultos todos los tamaños de un producto, la tarjeta entera
+  //    se saca igual que si se hubiera ocultado el producto completo.
   function applyHiddenProducts(){
     fetch("/api/products-visibility").then(function(resp){ return resp.json(); }).then(function(data){
       var hidden = (data && data.hidden) || [];
+      var wholeIds = {};
+      var sizeHidesByProduct = {};
       hidden.forEach(function(id){
+        var sep = id.indexOf("__");
+        if (sep === -1){
+          wholeIds[id] = true;
+        } else {
+          var productId = id.slice(0, sep);
+          var sizeKey = id.slice(sep + 2);
+          if (!sizeHidesByProduct[productId]) sizeHidesByProduct[productId] = [];
+          sizeHidesByProduct[productId].push(sizeKey);
+        }
+      });
+
+      Object.keys(wholeIds).forEach(function(id){
         var card = document.getElementById("card-" + id);
         if (card) card.remove();
       });
+
+      Object.keys(sizeHidesByProduct).forEach(function(productId){
+        if (wholeIds[productId]) return; // ya se sacó la tarjeta entera
+        var card = document.getElementById("card-" + productId);
+        if (!card) return;
+        var hiddenSizeKeys = sizeHidesByProduct[productId];
+        hiddenSizeKeys.forEach(function(sizeKey){
+          var pill = card.querySelector('.size-pill[data-size="' + sizeKey + '"]');
+          if (pill) pill.remove();
+        });
+        var remainingPills = card.querySelectorAll(".size-pill");
+        if (remainingPills.length === 0){
+          // No queda ningún tamaño disponible para pedir: sacamos la
+          // tarjeta entera, no tiene sentido dejarla vacía.
+          card.remove();
+          return;
+        }
+        // Si el tamaño que estaba seleccionado por defecto quedó oculto,
+        // pasamos la selección al primer tamaño que sigue disponible.
+        if (hiddenSizeKeys.indexOf(cardSelection[productId]) !== -1){
+          cardSelection[productId] = remainingPills[0].getAttribute("data-size");
+          refreshCard(productId);
+        }
+      });
+
       ["menuGrid", "hambGrid", "pizzaGrid", "extrasGrid", "bebidasGrid"].forEach(function(gridId){
         var grid = document.getElementById(gridId);
         if (grid && grid.children.length === 0){
@@ -1726,13 +1771,30 @@
   var BEBIDAS = [
     {id:"jugo-fresh", name:"Jugo Fresh", noPhoto:true, fries:false,
       sizes:[{key:"500ml", label:"500 ml", price:2000},{key:"1.5l", label:"1.5 L", price:3500}]},
-    {id:"gaseosa-pepsi-familia", name:"Pepsi / 7UP / Paso de los Toros / Mirinda / H2OH!", noPhoto:true, fries:false,
+    // Pepsi, 7UP, Paso de los Toros, Mirinda y H2OH! van todas al mismo
+    // precio, pero separadas como productos propios (a pedido del cliente)
+    // para que el pedido diga con claridad cuál de todas se pidió.
+    {id:"pepsi", name:"Pepsi", noPhoto:true, fries:false,
+      sizes:[{key:"500ml", label:"500 ml", price:2500},{key:"1.5l", label:"1.5 L", price:4000}]},
+    {id:"7up", name:"7UP", noPhoto:true, fries:false,
+      sizes:[{key:"500ml", label:"500 ml", price:2500},{key:"1.5l", label:"1.5 L", price:4000}]},
+    {id:"paso-de-los-toros", name:"Paso de los Toros", noPhoto:true, fries:false,
+      sizes:[{key:"500ml", label:"500 ml", price:2500},{key:"1.5l", label:"1.5 L", price:4000}]},
+    {id:"mirinda", name:"Mirinda", noPhoto:true, fries:false,
+      sizes:[{key:"500ml", label:"500 ml", price:2500},{key:"1.5l", label:"1.5 L", price:4000}]},
+    {id:"h2oh", name:"H2OH!", noPhoto:true, fries:false,
       sizes:[{key:"500ml", label:"500 ml", price:2500},{key:"1.5l", label:"1.5 L", price:4000}]},
     {id:"pepsi-lata", name:"Pepsi Lata", noPhoto:true, fries:false,
-      sizes:[{key:"lata", label:"Lata", price:2000}]},
+      sizes:[{key:"354ml", label:"354 ml", price:2000}]},
     {id:"gatorade", name:"Gatorade", noPhoto:true, fries:false,
       sizes:[{key:"500ml", label:"500 ml", price:2500},{key:"750ml", label:"750 ml", price:4000}]},
-    {id:"gaseosa-coca-familia", name:"Coca-Cola / Sprite / Fanta", noPhoto:true, fries:false,
+    // Coca-Cola, Sprite y Fanta: mismo precio, mismo motivo de separación
+    // que Pepsi y compañía arriba.
+    {id:"coca-cola", name:"Coca-Cola", noPhoto:true, fries:false,
+      sizes:[{key:"500ml", label:"500 ml", price:3000},{key:"1.5l", label:"1.5 L", price:5500},{key:"2.25l", label:"2.25 L", price:7000}]},
+    {id:"sprite", name:"Sprite", noPhoto:true, fries:false,
+      sizes:[{key:"500ml", label:"500 ml", price:3000},{key:"1.5l", label:"1.5 L", price:5500},{key:"2.25l", label:"2.25 L", price:7000}]},
+    {id:"fanta", name:"Fanta", noPhoto:true, fries:false,
       sizes:[{key:"500ml", label:"500 ml", price:3000},{key:"1.5l", label:"1.5 L", price:5500},{key:"2.25l", label:"2.25 L", price:7000}]},
     {id:"speed", name:"Speed", noPhoto:true, fries:false,
       sizes:[{key:"chica", label:"Chica", price:2500},{key:"grande", label:"Grande", price:4000}]},

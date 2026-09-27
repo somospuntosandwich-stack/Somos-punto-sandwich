@@ -933,23 +933,64 @@
   // un archivo autocontenido es más simple de mantener que compartir un
   // módulo entre dos páginas distintas para una lista tan chica. Si se
   // agrega un producto nuevo en el menú, agregarlo acá también.
+  // "sizes" es opcional: solo lo tienen los productos con más de un tamaño
+  // en el menú (ver index.html). Cuando existe, el panel muestra un botón
+  // de visible/oculto POR TAMAÑO (id compuesto "productoId__tamañoKey") en
+  // vez de uno solo para todo el producto — así se puede, por ejemplo,
+  // ocultar "Sprite 500 ml" sin ocultar "Sprite 1.5 L". Los productos sin
+  // "sizes" (una sola presentación) siguen con un único botón, como antes.
   var PRODUCTS = [
-    {id:"milanesa-carne", name:"Punto Milanesa Carne", cat:"Puntos"},
-    {id:"milanesa-napolitana", name:"Punto Milanesa Napolitana", cat:"Puntos"},
-    {id:"milanesa-pollo", name:"Punto Milanesa Pollo", cat:"Puntos"},
-    {id:"lomo", name:"Punto Lomo", cat:"Puntos"},
-    {id:"bife-ancho", name:"Punto Bife Ancho", cat:"Puntos"},
-    {id:"bondiola", name:"Punto Bondiola", cat:"Puntos"},
-    {id:"molleja", name:"Punto Molleja", cat:"Puntos"},
-    {id:"hamburguesa", name:"Punto Burger Carne", cat:"Hamburguesas"},
-    {id:"hamburguesa-pollo", name:"Punto Burger Pollo", cat:"Hamburguesas"},
+    {id:"milanesa-carne", name:"Punto Milanesa Carne", cat:"Puntos",
+      sizes:[{key:"simple", label:"Punto Simple (23 cm)"},{key:"xl", label:"Punto XL (40 cm)"}]},
+    {id:"milanesa-napolitana", name:"Punto Milanesa Napolitana", cat:"Puntos",
+      sizes:[{key:"simple", label:"Punto Simple (23 cm)"},{key:"xl", label:"Punto XL (40 cm)"}]},
+    {id:"milanesa-pollo", name:"Punto Milanesa Pollo", cat:"Puntos",
+      sizes:[{key:"simple", label:"Punto Simple (23 cm)"},{key:"xl", label:"Punto XL (40 cm)"}]},
+    {id:"lomo", name:"Punto Lomo", cat:"Puntos",
+      sizes:[{key:"simple", label:"Punto Simple (23 cm)"},{key:"xl", label:"Punto XL (40 cm)"}]},
+    {id:"bife-ancho", name:"Punto Bife Ancho", cat:"Puntos",
+      sizes:[{key:"simple", label:"Punto Simple (23 cm)"},{key:"xl", label:"Punto XL (40 cm)"}]},
+    {id:"bondiola", name:"Punto Bondiola", cat:"Puntos",
+      sizes:[{key:"simple", label:"Punto Simple (23 cm)"},{key:"xl", label:"Punto XL (40 cm)"}]},
+    {id:"molleja", name:"Punto Molleja", cat:"Puntos",
+      sizes:[{key:"simple", label:"Punto Simple (23 cm)"},{key:"xl", label:"Punto XL (40 cm)"}]},
+    {id:"hamburguesa", name:"Punto Burger Carne", cat:"Hamburguesas",
+      sizes:[{key:"simple", label:"Simple"},{key:"doble", label:"Doble"}]},
+    {id:"hamburguesa-pollo", name:"Punto Burger Pollo", cat:"Hamburguesas",
+      sizes:[{key:"simple", label:"Simple"},{key:"doble", label:"Doble"}]},
     {id:"pizza-muzza", name:"Muzza", cat:"Pizzas"},
     {id:"pizza-especial", name:"Especial", cat:"Pizzas"},
     {id:"pizza-primavera", name:"Primavera", cat:"Pizzas"},
     {id:"pizza-napolitana", name:"Napolitana", cat:"Pizzas"},
     {id:"pizza-paisana", name:"Paisana", cat:"Pizzas"},
-    {id:"papas-fritas", name:"Papas Fritas", cat:"Extras"},
-    {id:"papas-sazonadas", name:"Papas Sazonadas", cat:"Extras"}
+    {id:"papas-fritas", name:"Papas Fritas", cat:"Extras",
+      sizes:[{key:"300g", label:"300 g"},{key:"500g", label:"500 g"}]},
+    {id:"papas-sazonadas", name:"Papas Sazonadas", cat:"Extras",
+      sizes:[{key:"300g", label:"300 g"},{key:"500g", label:"500 g"}]},
+    {id:"jugo-fresh", name:"Jugo Fresh", cat:"Bebidas",
+      sizes:[{key:"500ml", label:"500 ml"},{key:"1.5l", label:"1.5 L"}]},
+    {id:"pepsi", name:"Pepsi", cat:"Bebidas",
+      sizes:[{key:"500ml", label:"500 ml"},{key:"1.5l", label:"1.5 L"}]},
+    {id:"7up", name:"7UP", cat:"Bebidas",
+      sizes:[{key:"500ml", label:"500 ml"},{key:"1.5l", label:"1.5 L"}]},
+    {id:"paso-de-los-toros", name:"Paso de los Toros", cat:"Bebidas",
+      sizes:[{key:"500ml", label:"500 ml"},{key:"1.5l", label:"1.5 L"}]},
+    {id:"mirinda", name:"Mirinda", cat:"Bebidas",
+      sizes:[{key:"500ml", label:"500 ml"},{key:"1.5l", label:"1.5 L"}]},
+    {id:"h2oh", name:"H2OH!", cat:"Bebidas",
+      sizes:[{key:"500ml", label:"500 ml"},{key:"1.5l", label:"1.5 L"}]},
+    {id:"pepsi-lata", name:"Pepsi Lata", cat:"Bebidas"},
+    {id:"gatorade", name:"Gatorade", cat:"Bebidas",
+      sizes:[{key:"500ml", label:"500 ml"},{key:"750ml", label:"750 ml"}]},
+    {id:"coca-cola", name:"Coca-Cola", cat:"Bebidas",
+      sizes:[{key:"500ml", label:"500 ml"},{key:"1.5l", label:"1.5 L"},{key:"2.25l", label:"2.25 L"}]},
+    {id:"sprite", name:"Sprite", cat:"Bebidas",
+      sizes:[{key:"500ml", label:"500 ml"},{key:"1.5l", label:"1.5 L"},{key:"2.25l", label:"2.25 L"}]},
+    {id:"fanta", name:"Fanta", cat:"Bebidas",
+      sizes:[{key:"500ml", label:"500 ml"},{key:"1.5l", label:"1.5 L"},{key:"2.25l", label:"2.25 L"}]},
+    {id:"speed", name:"Speed", cat:"Bebidas",
+      sizes:[{key:"chica", label:"Chica"},{key:"grande", label:"Grande"}]},
+    {id:"agua", name:"Agua", cat:"Bebidas"}
   ];
   var hiddenProducts = [];
   var productsLoaded = false;
@@ -979,15 +1020,26 @@
       if (!cats[p.cat]){ cats[p.cat] = []; order.push(p.cat); }
       cats[p.cat].push(p);
     });
+    function toggleBtnHtml(id, label){
+      var isHidden = hiddenProducts.indexOf(id) !== -1;
+      return '<div class="product-row">' +
+        '<span class="product-row-name">' + escapeHtml(label) + '</span>' +
+        '<button type="button" class="product-toggle-btn' + (isHidden ? ' is-hidden' : '') + '" data-id="' + id + '">' +
+          (isHidden ? "🔴 Oculto — mostrar" : "🟢 Visible — ocultar") +
+        '</button>' +
+      '</div>';
+    }
     var html = order.map(function(cat){
       var rows = cats[cat].map(function(p){
-        var isHidden = hiddenProducts.indexOf(p.id) !== -1;
-        return '<div class="product-row">' +
-          '<span class="product-row-name">' + escapeHtml(p.name) + '</span>' +
-          '<button type="button" class="product-toggle-btn' + (isHidden ? ' is-hidden' : '') + '" data-id="' + p.id + '">' +
-            (isHidden ? "🔴 Oculto — mostrar" : "🟢 Visible — ocultar") +
-          '</button>' +
-        '</div>';
+        if (p.sizes && p.sizes.length > 1){
+          // Un producto con varios tamaños se controla POR TAMAÑO (id
+          // compuesto "productoId__tamañoKey"), para poder ocultar, por
+          // ejemplo, solo la Sprite de 500 ml y dejar la de 1.5 L visible.
+          return p.sizes.map(function(s){
+            return toggleBtnHtml(p.id + "__" + s.key, p.name + " — " + s.label);
+          }).join("");
+        }
+        return toggleBtnHtml(p.id, p.name);
       }).join("");
       return '<div class="products-cat-label">' + cat + '</div>' + rows;
     }).join("");
