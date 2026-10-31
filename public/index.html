@@ -1,0 +1,2838 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Punto Sandwich</title>
+<meta name="description" content="Menú y pedidos por WhatsApp de Punto Sandwich">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+  :root{
+    color-scheme: light;
+    box-sizing: border-box;
+  }
+  html{ scroll-padding-top: env(safe-area-inset-top, 0px); }
+  body{
+    margin:0;
+    padding:0;
+  }
+  img{ max-width:100%; }
+  [hidden]:not([hidden="until-found"]){ display:none !important; }
+</style>
+</head>
+<body>
+<style>
+  :root{
+    --ink:#15120c;
+    --ink-2:#211b10;
+    --yellow:#f7b500;
+    --yellow-deep:#c98600;
+    --yellow-pale:#fde8ab;
+    --bg:#100d08;
+    --surface:#1b160e;
+    --surface-2:#262013;
+    --text:#f8f4ea;
+    --text-muted:rgba(248,244,234,.6);
+    --line:rgba(255,255,255,.14);
+    --whatsapp:#25d366;
+    --whatsapp-deep:#1cab54;
+    --mp-blue:#009ee3;
+    --mp-blue-deep:#0087c4;
+    --shadow-sm:0 2px 8px rgba(0,0,0,.28);
+    --shadow-lg:0 18px 40px rgba(0,0,0,.4);
+    background:var(--bg);
+    color-scheme: dark;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Manrope',system-ui,-apple-system,sans-serif;
+    padding-bottom: calc(96px + env(safe-area-inset-bottom,0px));
+  }
+  h1,h2,h3,.display{
+    font-family:'Fredoka',system-ui,sans-serif;
+    font-weight:600;
+    letter-spacing:.2px;
+    text-wrap:balance;
+    margin:0;
+  }
+  img{max-width:100%;display:block;}
+  .wrap{
+    max-width:1080px;
+    margin:0 auto;
+    padding-inline:20px;
+  }
+
+  /* ---------- header ---------- */
+  header.top{
+    position:sticky;
+    top:env(safe-area-inset-top,0px);
+    z-index:40;
+    background:var(--ink);
+    border-bottom:3px solid var(--yellow);
+  }
+  .top-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding-block:10px;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:var(--yellow-pale);
+  }
+  .brand img{
+    height:44px;width:auto;object-fit:contain;
+    filter:drop-shadow(0 2px 4px rgba(0,0,0,.35));
+  }
+  .brand-name{
+    font-family:'Fredoka',sans-serif;
+    font-weight:700;
+    font-size:1.15rem;
+    color:#fff;
+    line-height:1;
+  }
+  .brand-tag{
+    font-size:.68rem;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+    color:var(--yellow);
+    font-weight:700;
+  }
+  .cart-chip{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:var(--yellow);
+    color:var(--ink);
+    border:none;
+    border-radius:999px;
+    padding:9px 16px;
+    font-family:'Fredoka',sans-serif;
+    font-weight:600;
+    font-size:.92rem;
+    cursor:pointer;
+    box-shadow:var(--shadow-sm);
+    transition:transform .15s ease;
+  }
+  .cart-chip:active{transform:scale(.96);}
+  .cart-chip .count{
+    background:var(--ink);
+    color:var(--yellow);
+    min-width:20px;height:20px;
+    border-radius:999px;
+    font-size:.72rem;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    font-variant-numeric:tabular-nums;
+    padding-inline:4px;
+  }
+
+  /* ---------- hero ---------- */
+  .hero{
+    color:#fff;
+    background:
+      linear-gradient(0deg, rgba(10,9,8,.95) 0%, rgba(10,9,8,.8) 26%, rgba(10,9,8,.28) 58%, rgba(10,9,8,.05) 78%),
+      url('images/hero-promo.jpg') center / cover no-repeat,
+      var(--ink);
+    aspect-ratio:1672/940;
+    min-height:320px;
+    max-height:560px;
+    position:relative;
+    overflow:hidden;
+    display:flex;
+    align-items:flex-end;
+    padding-block:0 28px;
+  }
+  .hero-inner{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+  }
+  .hero-content{
+    max-width:560px;
+  }
+  .hero h1{
+    font-size:clamp(1.7rem,4.4vw,2.5rem);
+    color:#fff;
+  }
+  .hero h1 span{color:var(--yellow);}
+  .hero p{
+    margin:10px auto 0;
+    color:rgba(255,255,255,.72);
+    font-size:.98rem;
+    max-width:46ch;
+    line-height:1.55;
+  }
+  .hero-badges{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    justify-content:center;
+    margin-top:16px;
+  }
+  .badge{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.16);
+    color:#fff;
+    font-size:.8rem;
+    font-weight:600;
+    padding:6px 12px;
+    border-radius:999px;
+  }
+  .badge svg{width:14px;height:14px;flex:none;}
+
+  /* ---------- shown while the local marked itself as closed ---------- */
+  .closed-banner{
+    background:#c1443c;
+    color:#fff;
+    text-align:center;
+    font-weight:700;
+    font-size:.92rem;
+    padding:12px 16px;
+    line-height:1.5;
+  }
+  .closed-banner a{color:#fff;text-decoration:underline;}
+
+  /* ---------- menu ---------- */
+  main{padding-block:34px 20px;}
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:18px;
+    flex-wrap:wrap;
+  }
+  .section-head h2{
+    font-size:1.5rem;
+    color:var(--text);
+  }
+  .section-head p{
+    margin:0;
+    color:var(--text-muted);
+    font-size:.88rem;
+  }
+  .section-head-2{margin-top:40px;}
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+    gap:18px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:20px;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    box-shadow:var(--shadow-sm);
+  }
+  .photo{
+    aspect-ratio:4/3;
+    width:100%;
+    background:
+      repeating-linear-gradient(135deg, rgba(247,181,0,.14) 0 12px, rgba(247,181,0,.05) 12px 24px),
+      var(--surface-2);
+    border-bottom:1px solid var(--line);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    color:var(--yellow);
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+  }
+  .photo svg{width:34px;height:34px;opacity:.85;}
+  .photo span{
+    font-size:.74rem;
+    font-weight:700;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    opacity:.85;
+  }
+  .photo.has-photo{
+    cursor:pointer;
+    padding:0;
+  }
+  .photo.has-photo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center bottom;
+    display:block;
+    transition:transform .35s cubic-bezier(.22,.75,.28,1), filter .35s ease;
+  }
+  .photo.has-photo::after{
+    content:"🔍 Ampliar";
+    position:absolute;
+    right:8px;
+    bottom:8px;
+    padding:5px 10px;
+    border-radius:999px;
+    background:rgba(15,12,7,.6);
+    color:#fff;
+    font-family:'Fredoka',sans-serif;
+    font-size:.68rem;
+    font-weight:600;
+    letter-spacing:.02em;
+    opacity:0;
+    transform:translateY(6px);
+    transition:opacity .2s ease, transform .2s ease;
+    pointer-events:none;
+  }
+  .photo.has-photo:hover img,
+  .photo.has-photo:focus-visible img{transform:scale(1.08);}
+  .photo.has-photo:hover::after,
+  .photo.has-photo:focus-visible::after{opacity:1;transform:translateY(0);}
+  .photo.has-photo:focus-visible{outline:2px solid var(--yellow);outline-offset:-2px;}
+
+  /* ---------- photo lightbox ---------- */
+  .photo-lightbox{
+    position:fixed;inset:0;
+    z-index:90;
+    background:rgba(10,8,5,.92);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:14px;
+    padding:24px;
+    padding-top:calc(24px + env(safe-area-inset-top,0px));
+    padding-bottom:calc(24px + env(safe-area-inset-bottom,0px));
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .22s ease;
+  }
+  .photo-lightbox.show{opacity:1;pointer-events:auto;}
+  .photo-lightbox img{
+    max-width:min(92vw, 640px);
+    max-height:72vh;
+    border-radius:16px;
+    box-shadow:0 20px 60px rgba(0,0,0,.5);
+    transform:scale(.96);
+    transition:transform .22s ease;
+  }
+  .photo-lightbox.show img{transform:scale(1);}
+  .photo-lightbox-caption{
+    color:#fff;
+    font-family:'Fredoka',sans-serif;
+    font-weight:600;
+    font-size:1rem;
+    text-transform:uppercase;
+    letter-spacing:.03em;
+    text-align:center;
+  }
+  .photo-lightbox-close{
+    position:absolute;
+    top:calc(16px + env(safe-area-inset-top,0px));
+    right:16px;
+    width:40px;height:40px;
+    border:none;
+    border-radius:50%;
+    background:rgba(255,255,255,.12);
+    color:#fff;
+    font-size:1.1rem;
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    transition:background .15s ease;
+  }
+  .photo-lightbox-close:hover{background:rgba(255,255,255,.22);}
+  .card-body{
+    padding:16px 16px 18px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+    flex:1;
+    text-align:center;
+  }
+  .card h3{
+    font-size:1.15rem;
+    color:var(--text);
+    line-height:1.25;
+    text-transform:uppercase;
+  }
+  .card p.ing{
+    margin:0;
+    color:var(--text-muted);
+    font-size:.85rem;
+    line-height:1.5;
+    flex:1;
+  }
+  .card p.ing.ing-pending{
+    font-style:italic;
+    opacity:.65;
+  }
+  .solo-price{
+    font-family:'Fredoka',sans-serif;
+    font-weight:700;
+    font-size:1.15rem;
+    color:var(--yellow);
+    font-variant-numeric:tabular-nums;
+  }
+  .fries-choice{
+    width:100%;
+    margin-top:2px;
+    padding-top:9px;
+    border-top:2px dotted var(--yellow-deep);
+  }
+  .fries-choice-label{
+    color:var(--yellow);
+    font-family:'Fredoka',sans-serif;
+    font-weight:600;
+    font-size:.82rem;
+    margin-bottom:6px;
+  }
+  .fries-opts{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+  }
+  .fries-opt{
+    background:var(--surface-2);
+    border:1.5px solid var(--line);
+    border-radius:12px;
+    padding:7px 6px;
+    cursor:pointer;
+    font-family:'Manrope',sans-serif;
+    font-weight:600;
+    font-size:.78rem;
+    color:var(--text);
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .fries-opt.selected{
+    border-color:var(--yellow);
+    background:rgba(247,181,0,.14);
+    color:var(--yellow);
+  }
+  .size-row{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:8px;
+    margin-top:4px;
+    width:100%;
+  }
+  .size-pill{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:1px;
+    background:var(--surface-2);
+    border:1.5px solid var(--line);
+    border-radius:14px;
+    padding:8px 6px 9px;
+    cursor:pointer;
+    font-family:'Manrope',sans-serif;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .size-pill .sp-label{
+    font-family:'Fredoka',sans-serif;
+    font-weight:600;
+    font-size:.85rem;
+    color:var(--text);
+  }
+  .size-pill .sp-cm{
+    font-size:.7rem;
+    color:var(--text-muted);
+    font-variant-numeric:tabular-nums;
+  }
+  .size-pill .sp-price{
+    margin-top:3px;
+    font-size:.78rem;
+    font-weight:700;
+    color:var(--text-muted);
+    font-variant-numeric:tabular-nums;
+  }
+  .size-pill.selected{
+    border-color:var(--yellow);
+    background:rgba(247,181,0,.14);
+  }
+  .size-pill.selected .sp-label,
+  .size-pill.selected .sp-cm,
+  .size-pill.selected .sp-price{color:var(--yellow);}
+  .size-pill.disabled{
+    opacity:.5;
+    cursor:not-allowed;
+  }
+  .size-pill.disabled .sp-price{
+    font-style:italic;
+    font-weight:600;
+    font-size:.7rem;
+  }
+  .addon-row{
+    width:100%;
+    margin-top:2px;
+  }
+  .addon-chip{
+    width:100%;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:var(--surface-2);
+    border:1.5px dashed var(--line);
+    border-radius:14px;
+    padding:10px 12px;
+    cursor:pointer;
+    font-family:'Manrope',sans-serif;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .addon-check{
+    flex:none;
+    width:18px;height:18px;
+    border-radius:6px;
+    border:1.5px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    font-size:.7rem;
+    color:transparent;
+  }
+  .addon-label{
+    flex:1;
+    text-align:left;
+    font-family:'Fredoka',sans-serif;
+    font-weight:600;
+    font-size:.85rem;
+    color:var(--text);
+  }
+  .addon-price{
+    flex:none;
+    font-size:.78rem;
+    font-weight:700;
+    color:var(--text-muted);
+    font-variant-numeric:tabular-nums;
+  }
+  .addon-chip.selected{
+    border-style:solid;
+    border-color:var(--yellow);
+    background:rgba(247,181,0,.14);
+  }
+  .addon-chip.selected .addon-check{
+    background:var(--yellow);
+    border-color:var(--yellow);
+    color:var(--ink);
+  }
+  .addon-chip.selected .addon-label,
+  .addon-chip.selected .addon-price{color:var(--yellow);}
+  .addon-chip.disabled{
+    opacity:.5;
+    cursor:not-allowed;
+  }
+  .addon-chip.disabled .addon-price{font-style:italic;}
+  .add-zone{
+    width:100%;
+    margin-top:6px;
+  }
+  .add-full{
+    width:100%;
+    border:none;
+    background:var(--yellow);
+    color:var(--ink);
+    font-family:'Fredoka',sans-serif;
+    font-weight:700;
+    font-size:.92rem;
+    letter-spacing:.03em;
+    text-transform:uppercase;
+    padding:13px;
+    border-radius:14px;
+    cursor:pointer;
+    transition:transform .15s ease, background .15s ease;
+  }
+  .add-full:active{transform:scale(.97);}
+  .add-full:hover{background:var(--yellow-deep);}
+  .stepper-full{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    width:100%;
+    background:var(--yellow);
+    border-radius:14px;
+    padding:5px;
+  }
+  .stepper-full button{
+    width:38px;height:38px;
+    border:none;
+    background:rgba(21,18,12,.12);
+    color:var(--ink);
+    font-size:1.2rem;
+    font-weight:800;
+    border-radius:10px;
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    line-height:1;
+    transition:background .15s ease;
+  }
+  .stepper-full button:active{background:rgba(21,18,12,.22);}
+  .stepper-full .n{
+    font-family:'Fredoka',sans-serif;
+    font-weight:700;
+    font-size:1.05rem;
+    color:var(--ink);
+    font-variant-numeric:tabular-nums;
+  }
+
+  /* ---------- contact ---------- */
+  .contact{padding-block:38px 8px;}
+  .contact-title{
+    font-size:1.9rem;
+    text-transform:uppercase;
+    color:var(--text);
+    text-align:center;
+    margin-bottom:22px;
+  }
+  .contact-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:14px;
+    max-width:640px;
+    margin:0 auto;
+  }
+  .contact-card{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:10px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:16px 18px;
+    text-decoration:none;
+    color:inherit;
+  }
+  .cc-wide{
+    grid-column:1 / -1;
+    flex-direction:row;
+    align-items:center;
+  }
+  @media (max-width:480px){
+    .contact-card{padding:14px;}
+  }
+  .cc-icon{
+    flex:none;
+    width:48px;height:48px;
+    border-radius:50%;
+    background:var(--surface-2);
+    border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.4rem;
+  }
+  .cc-icon-wa{background:var(--whatsapp);border-color:var(--whatsapp);color:#fff;}
+  .cc-icon-wa svg{width:24px;height:24px;}
+  .cc-icon-ig{
+    background:linear-gradient(45deg,#f9ce34,#ee2a7b,#6228d7);
+    border-color:transparent;
+    color:#fff;
+  }
+  .cc-icon-ig svg{width:22px;height:22px;}
+  .cc-body{flex:1;min-width:0;}
+  .cc-label{
+    font-family:'Fredoka',sans-serif;
+    font-weight:700;
+    font-size:1rem;
+    text-transform:uppercase;
+    letter-spacing:.02em;
+    color:var(--text);
+  }
+  .cc-detail{
+    margin-top:2px;
+    font-size:.85rem;
+    color:var(--text-muted);
+  }
+  .cc-arrow{
+    flex:none;
+    color:var(--yellow);
+    font-size:1.1rem;
+    font-weight:700;
+  }
+  .cc-link{
+    transition:border-color .15s ease, transform .15s ease;
+  }
+  .cc-link:hover{border-color:var(--yellow);}
+  .cc-link:active{transform:scale(.98);}
+
+  footer{
+    text-align:center;
+    padding:26px 20px 14px;
+    color:var(--text-muted);
+    font-size:.8rem;
+  }
+  footer a{color:var(--yellow);font-weight:700;}
+
+  /* ---------- floating cart bar ---------- */
+  .cart-bar{
+    position:fixed;
+    left:0;right:0;
+    bottom:0;
+    z-index:50;
+    padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));
+    background:var(--ink);
+    border-top:3px solid var(--yellow);
+    transform:translateY(100%);
+    transition:transform .25s ease;
+  }
+  .cart-bar.show{transform:translateY(0);}
+  .cart-bar-inner{
+    max-width:1080px;
+    margin:0 auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+  }
+  .cart-info{color:#fff;}
+  .cart-info .count-line{
+    font-size:.72rem;
+    color:var(--yellow);
+    font-weight:700;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+  }
+  .cart-info .total{
+    font-family:'Fredoka',sans-serif;
+    font-weight:700;
+    font-size:1.3rem;
+    font-variant-numeric:tabular-nums;
+  }
+  .wa-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:var(--whatsapp);
+    color:#fff;
+    border:none;
+    padding:12px 20px;
+    border-radius:999px;
+    font-family:'Fredoka',sans-serif;
+    font-weight:600;
+    font-size:.95rem;
+    cursor:pointer;
+    box-shadow:0 6px 18px rgba(37,211,102,.35);
+    transition:transform .15s ease, background .15s ease;
+    white-space:nowrap;
+  }
+  .wa-btn:hover{background:var(--whatsapp-deep);}
+  .wa-btn:active{transform:scale(.96);}
+  .wa-btn.is-sending{opacity:.7;pointer-events:none;}
+  .wa-btn svg{width:18px;height:18px;flex:none;}
+  .mp-btn{background:var(--mp-blue);box-shadow:0 6px 18px rgba(0,158,227,.35);}
+  .mp-btn:hover{background:var(--mp-blue-deep);}
+  .view-order-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:var(--yellow);
+    color:var(--ink);
+    border:none;
+    padding:12px 20px;
+    border-radius:999px;
+    font-family:'Fredoka',sans-serif;
+    font-weight:600;
+    font-size:.95rem;
+    cursor:pointer;
+    transition:transform .15s ease;
+    white-space:nowrap;
+  }
+  .view-order-btn:active{transform:scale(.96);}
+
+  /* ---------- cart drawer ---------- */
+  .scrim{
+    position:fixed;inset:0;
+    background:rgba(15,12,7,.55);
+    backdrop-filter:blur(2px);
+    z-index:70;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .2s ease;
+  }
+  .scrim.show{opacity:1;pointer-events:auto;}
+  .drawer{
+    position:fixed;
+    left:0;right:0;bottom:0;
+    z-index:71;
+    background:var(--ink);
+    color:#fff;
+    border-radius:22px 22px 0 0;
+    max-height:88vh;
+    display:flex;
+    flex-direction:column;
+    transform:translateY(100%);
+    transition:transform .28s cubic-bezier(.32,.72,0,1);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  .drawer.show{transform:translateY(0);}
+  .drawer-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:18px 20px 12px;
+    border-bottom:1px solid rgba(255,255,255,.1);
+    flex:none;
+  }
+  .drawer-head h2{
+    font-size:1.15rem;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .drawer-close{
+    width:34px;height:34px;
+    border-radius:50%;
+    border:none;
+    background:rgba(255,255,255,.1);
+    color:#fff;
+    font-size:1.1rem;
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .drawer-body{
+    padding:16px 20px 24px;
+    overflow-y:auto;
+    flex:1;
+  }
+  .drawer-empty{
+    color:rgba(255,255,255,.7);
+    text-align:center;
+    padding:30px 10px 10px;
+  }
+  .drawer-empty p{margin:0 0 16px;}
+  .ghost-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:transparent;
+    border:1.5px solid var(--yellow);
+    color:var(--yellow);
+    font-family:'Fredoka',sans-serif;
+    font-weight:600;
+    font-size:.88rem;
+    padding:9px 18px;
+    border-radius:999px;
+    cursor:pointer;
+  }
+  .line-item{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding-block:10px;
+    border-bottom:1px solid rgba(255,255,255,.08);
+  }
+  .line-item .li-name{
+    flex:1;
+    min-width:0;
+  }
+  .line-item .li-name strong{
+    display:block;
+    font-size:.92rem;
+    font-weight:700;
+    color:#fff;
+  }
+  .line-item .li-name span{
+    font-size:.76rem;
+    color:rgba(255,255,255,.55);
+  }
+  .li-stepper{
+    display:flex;
+    align-items:center;
+    border:1.5px solid rgba(255,255,255,.3);
+    border-radius:999px;
+    flex:none;
+  }
+  .li-stepper button{
+    width:26px;height:26px;
+    border:none;background:transparent;color:#fff;
+    font-size:1rem;font-weight:700;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .li-stepper .n{
+    min-width:20px;text-align:center;
+    font-size:.85rem;font-weight:700;
+    font-variant-numeric:tabular-nums;
+  }
+  .li-sub{
+    width:52px;
+    text-align:right;
+    font-family:'Fredoka',sans-serif;
+    font-weight:600;
+    font-size:.9rem;
+    color:var(--yellow);
+    font-variant-numeric:tabular-nums;
+    flex:none;
+  }
+  .drawer-total-row{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    padding-top:14px;
+    margin-top:4px;
+  }
+  .drawer-total-row .label{
+    font-size:.85rem;
+    color:rgba(255,255,255,.65);
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+  }
+  .drawer-total-row .amount{
+    font-family:'Fredoka',sans-serif;
+    font-weight:700;
+    font-size:1.5rem;
+    color:#fff;
+    font-variant-numeric:tabular-nums;
+  }
+  .drawer-actions-row{
+    margin-top:12px;
+  }
+  .drawer-section{
+    margin-top:22px;
+  }
+  .drawer-section > label,
+  .drawer-section > .drawer-section-title{
+    display:block;
+    font-size:.82rem;
+    font-weight:700;
+    color:rgba(255,255,255,.85);
+    margin-bottom:8px;
+  }
+  .req-mark{
+    color:var(--yellow);
+    font-weight:600;
+    text-transform:none;
+    font-size:.72rem;
+  }
+  .field{
+    width:100%;
+    background:rgba(255,255,255,.07);
+    border:1.5px solid rgba(255,255,255,.16);
+    border-radius:14px;
+    color:#fff;
+    font-family:'Manrope',sans-serif;
+    font-size:.9rem;
+    padding:11px 13px;
+    resize:vertical;
+  }
+  .field::placeholder{color:rgba(255,255,255,.4);}
+  .field:focus{outline:2px solid var(--yellow);outline-offset:1px;}
+  .combo-wrap{position:relative;}
+  .combo-options{
+    margin-top:6px;
+    max-height:220px;
+    overflow-y:auto;
+    background:var(--surface-2);
+    border:1.5px solid rgba(255,255,255,.16);
+    border-radius:14px;
+    padding:6px;
+  }
+  .combo-group{
+    padding:8px 10px 4px;
+    font-size:.68rem;
+    font-weight:700;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    color:rgba(255,255,255,.4);
+  }
+  .combo-option{
+    padding:9px 10px;
+    border-radius:10px;
+    font-size:.88rem;
+    color:#fff;
+    cursor:pointer;
+  }
+  .combo-option:hover,
+  .combo-option.is-highlighted{
+    background:rgba(247,181,0,.16);
+    color:var(--yellow);
+  }
+  .combo-empty{
+    padding:10px;
+    font-size:.82rem;
+    color:rgba(255,255,255,.5);
+  }
+  .delivery-options,.payment-options{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+  }
+  .delivery-opt,.payment-opt{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:6px;
+    background:rgba(255,255,255,.06);
+    border:1.5px solid rgba(255,255,255,.16);
+    border-radius:16px;
+    padding:14px 8px;
+    cursor:pointer;
+    color:#fff;
+    font-family:'Fredoka',sans-serif;
+    font-weight:600;
+    font-size:.85rem;
+    transition:border-color .15s ease, background .15s ease;
+    text-align:center;
+  }
+  .delivery-opt .emoji,.payment-opt .emoji{font-size:1.5rem;}
+  .delivery-opt.selected,.payment-opt.selected{
+    border-color:var(--yellow);
+    background:rgba(247,181,0,.14);
+    color:var(--yellow);
+  }
+  .payment-opt.selected.mp-selected{
+    border-color:var(--mp-blue);
+    background:rgba(0,158,227,.14);
+    color:var(--mp-blue);
+  }
+  .payment-hint{
+    margin-top:2px;
+    color:rgba(255,255,255,.55);
+    font-size:.78rem;
+    line-height:1.5;
+  }
+  .payment-result{
+    margin:0 0 16px;
+    padding:16px;
+    border-radius:16px;
+    border:1.5px solid rgba(255,255,255,.16);
+    background:rgba(255,255,255,.06);
+  }
+  .payment-result.is-ok{border-color:rgba(37,211,102,.4);background:rgba(37,211,102,.08);}
+  .payment-result.is-pending{border-color:rgba(247,181,0,.4);background:rgba(247,181,0,.08);}
+  .payment-result.is-fail{border-color:rgba(255,110,90,.4);background:rgba(255,110,90,.08);}
+  .payment-result h3{
+    font-family:'Fredoka',sans-serif;
+    font-size:1.05rem;
+    margin:0 0 6px;
+  }
+  .payment-result p{
+    margin:0 0 12px;
+    color:var(--text-muted);
+    font-size:.88rem;
+    line-height:1.5;
+  }
+  .maps-steps{
+    margin-top:2px;
+    color:rgba(255,255,255,.55);
+    font-size:.78rem;
+    line-height:1.5;
+  }
+  .map-wrap{
+    border-radius:16px;
+    overflow:hidden;
+    border:1.5px solid rgba(255,255,255,.16);
+    background:#0c1f16;
+    touch-action:manipulation;
+  }
+  .heat-legend{
+    margin-top:8px;
+    color:rgba(255,255,255,.5);
+    font-size:.72rem;
+    line-height:1.4;
+  }
+  .delivery-map{
+    display:block;
+    width:100%;
+    height:auto;
+    cursor:crosshair;
+  }
+  .map-land{fill:#0f2419;}
+  .map-sea{fill:rgba(60,140,190,.35);}
+  .map-ring-label{
+    fill:rgba(255,255,255,.4);
+    font-size:9px;
+    font-family:'Manrope',sans-serif;
+  }
+  .map-landmark-dot{fill:rgba(255,255,255,.55);}
+  .map-landmark-label{
+    fill:rgba(255,255,255,.75);
+    font-size:10px;
+    font-weight:600;
+    font-family:'Manrope',sans-serif;
+    text-anchor:middle;
+  }
+  .map-compass{
+    fill:rgba(255,255,255,.4);
+    font-size:11px;
+    font-weight:700;
+    text-anchor:middle;
+    font-family:'Fredoka',sans-serif;
+  }
+  .map-store-dot{
+    fill:var(--yellow);
+    stroke:var(--ink);
+    stroke-width:2;
+  }
+  .map-store-label{
+    fill:var(--yellow);
+    font-size:11px;
+    font-weight:700;
+    text-anchor:middle;
+    font-family:'Fredoka',sans-serif;
+  }
+  .map-pin-halo{
+    fill:rgba(255,255,255,.9);
+    opacity:.25;
+  }
+  .map-pin-dot{
+    fill:#fff;
+    stroke:var(--ink);
+    stroke-width:1.5;
+  }
+  .map-route-line{
+    stroke:var(--yellow);
+    stroke-width:1.75;
+    stroke-dasharray:4 4;
+    opacity:.8;
+  }
+  .map-route-label-bg{
+    fill:var(--ink);
+    stroke:var(--yellow);
+    stroke-width:1;
+  }
+  .map-route-label{
+    fill:var(--yellow);
+    font-size:10px;
+    font-weight:700;
+    text-anchor:middle;
+    font-family:'Manrope',sans-serif;
+  }
+  .map-wrap.map-readonly{
+    opacity:.85;
+  }
+  .map-wrap.map-readonly .delivery-map{
+    cursor:default;
+  }
+  .geoloc-status{
+    margin-top:8px;
+    font-size:.78rem;
+    color:rgba(255,255,255,.65);
+    line-height:1.4;
+  }
+  .geoloc-status.is-error{color:#ff9d8a;}
+  .delivery-fee-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-top:12px;
+    padding:10px 14px;
+    background:rgba(247,181,0,.1);
+    border:1px solid rgba(247,181,0,.3);
+    border-radius:12px;
+    color:#fff;
+    font-size:.88rem;
+  }
+  .delivery-fee-row strong{
+    font-family:'Fredoka',sans-serif;
+    color:var(--yellow);
+    font-variant-numeric:tabular-nums;
+  }
+  .delivery-fee-hint{
+    margin-top:8px;
+    color:rgba(255,255,255,.45);
+    font-size:.74rem;
+    line-height:1.4;
+  }
+  .drawer-final-wa{
+    width:100%;
+    justify-content:center;
+    margin-top:20px;
+    padding:14px 20px;
+    font-size:1rem;
+  }
+  .drawer-hint{
+    text-align:center;
+    color:rgba(255,255,255,.45);
+    font-size:.76rem;
+    margin-top:10px;
+  }
+
+  @media (min-width:640px){
+    .drawer{
+      left:50%;
+      right:auto;
+      bottom:24px;
+      transform:translate(-50%,140%);
+      width:min(440px, calc(100vw - 32px));
+      border-radius:22px;
+      max-height:min(88vh,720px);
+    }
+    .drawer.show{transform:translate(-50%,0);}
+  }
+
+  @media (max-width:480px){
+    .hero{aspect-ratio:auto; min-height:280px;}
+    .cart-info .total{font-size:1.1rem;}
+    .wa-btn,.view-order-btn{padding:11px 16px;font-size:.88rem;}
+  }
+
+  /* ---------- cartel propio (reemplaza alert() del navegador) ---------- */
+  .modal-overlay{
+    position:fixed;inset:0;
+    background:rgba(0,0,0,.6);
+    display:flex;align-items:center;justify-content:center;
+    padding:20px;
+    z-index:1000;
+  }
+  .modal-overlay[hidden]{display:none;}
+  .modal-box{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:20px;
+    max-width:380px;
+    width:100%;
+    box-shadow:var(--shadow-lg);
+  }
+  .modal-msg{
+    color:var(--text);
+    font-size:.92rem;
+    line-height:1.55;
+    white-space:pre-wrap;
+    margin-bottom:16px;
+  }
+  .modal-actions{display:flex;justify-content:flex-end;}
+  .modal-btn{
+    border:none;
+    background:var(--yellow);
+    color:var(--ink);
+    font-family:'Fredoka',sans-serif;
+    font-weight:600;
+    font-size:.88rem;
+    padding:10px 20px;
+    border-radius:999px;
+    cursor:pointer;
+  }
+</style>
+
+<div class="modal-overlay" id="modalOverlay" hidden>
+  <div class="modal-box">
+    <div class="modal-msg" id="modalMsg"></div>
+    <div class="modal-actions">
+      <button type="button" class="modal-btn" id="modalOkBtn">Entendido</button>
+    </div>
+  </div>
+</div>
+
+<header class="top">
+  <div class="wrap top-row">
+    <div class="brand">
+      <img src="images/logo.png" alt="Punto Sandwich">
+      <div>
+        <div class="brand-name">Punto Sandwich</div>
+        <div class="brand-tag">Pedí por WhatsApp</div>
+      </div>
+    </div>
+    <button class="cart-chip" id="cartChipBtn" type="button">
+      🛒 <span class="count" id="chipCount">0</span>
+    </button>
+  </div>
+</header>
+
+<div class="wrap" id="paymentResultWrap" hidden style="padding-top:14px">
+  <div class="payment-result" id="paymentResultBox"></div>
+</div>
+
+<div class="closed-banner" id="closedBanner" hidden>
+  🚫 No estamos tomando pedidos en este momento.
+  <a href="https://wa.me/5492974120010" target="_blank" rel="noopener">Escribinos por WhatsApp</a> para consultas.
+</div>
+
+<section class="hero" role="img" aria-label="Punto Sandwich - hamburguesas, sándwiches y pizzas para delivery">
+  <div class="wrap hero-inner">
+    <div class="hero-content">
+      <h1>Cada sándwich, un <span>Punto</span> aparte.</h1>
+      <p>Elegí tus sándwiches, armá el pedido y lo mandamos directo por WhatsApp. Sin vueltas.</p>
+      <div class="hero-badges">
+        <span class="badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+          Pedido directo, sin apps
+        </span>
+        <span class="badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+          Retiro en el local
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<main class="wrap">
+  <div class="section-head">
+    <h2>Nuestros Puntos</h2>
+    <p>Todos vienen en pan de tu elección · fotos próximamente</p>
+  </div>
+
+  <div class="grid" id="menuGrid"></div>
+
+  <div class="section-head section-head-2">
+    <h2>Hamburguesas</h2>
+    <p>Fotos próximamente</p>
+  </div>
+
+  <div class="grid" id="hambGrid"></div>
+
+  <div class="section-head section-head-2">
+    <h2>Pizzas</h2>
+    <p>Fotos próximamente</p>
+  </div>
+
+  <div class="grid" id="pizzaGrid"></div>
+
+  <div class="section-head section-head-2">
+    <h2>Extras</h2>
+  </div>
+
+  <div class="grid" id="extrasGrid"></div>
+
+  <div class="section-head section-head-2">
+    <h2>Bebidas</h2>
+  </div>
+
+  <div class="grid" id="bebidasGrid"></div>
+</main>
+
+<section class="contact">
+  <div class="wrap">
+    <h2 class="contact-title">Contacto</h2>
+    <div class="contact-grid">
+
+      <a class="contact-card cc-link" href="https://www.google.com/maps/search/?api=1&query=Av.+Chile+1515%2C+Comodoro+Rivadavia%2C+Chubut%2C+Argentina" target="_blank" rel="noopener">
+        <div class="cc-icon">📍</div>
+        <div class="cc-body">
+          <div class="cc-label">Retiro</div>
+          <div class="cc-detail">Av. Chile 1515, Comodoro Rivadavia</div>
+        </div>
+        <span class="cc-arrow">↗</span>
+      </a>
+
+      <a class="contact-card cc-link" href="https://wa.me/5492974120010" target="_blank" rel="noopener">
+        <div class="cc-icon cc-icon-wa">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2c-5.46 0-9.9 4.44-9.9 9.9 0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.9-4.44 9.9-9.9 0-2.64-1.03-5.12-2.9-6.99A9.82 9.82 0 0 0 12.04 2zm0 18.12h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.18 8.18 0 0 1-1.25-4.36c0-4.53 3.69-8.22 8.24-8.22 2.2 0 4.27.86 5.82 2.42a8.17 8.17 0 0 1 2.41 5.81c0 4.54-3.69 8.21-8.23 8.21zm4.51-6.16c-.25-.12-1.46-.72-1.69-.8-.23-.08-.39-.12-.56.13-.16.25-.64.8-.78.97-.14.17-.29.18-.54.06-.25-.12-1.03-.38-1.96-1.21-.72-.65-1.21-1.45-1.35-1.7-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.12-.14.16-.25.25-.41.08-.17.04-.31-.02-.43-.06-.13-.56-1.35-.76-1.85-.2-.48-.4-.42-.56-.42-.14-.01-.31-.01-.47-.01s-.43.06-.66.31c-.23.25-.86.85-.86 2.08 0 1.22.89 2.41 1.01 2.58.12.17 1.75 2.67 4.24 3.74.59.26 1.05.41 1.41.52.6.19 1.14.16 1.57.1.48-.07 1.46-.6 1.67-1.18.21-.58.21-1.08.14-1.18-.06-.1-.22-.16-.47-.29z"/></svg>
+        </div>
+        <div class="cc-body">
+          <div class="cc-label">WhatsApp</div>
+          <div class="cc-detail">Escribinos y pedí directo</div>
+        </div>
+        <span class="cc-arrow">↗</span>
+      </a>
+
+      <div class="contact-card">
+        <div class="cc-icon">🛵</div>
+        <div class="cc-body">
+          <div class="cc-label">Delivery</div>
+          <div class="cc-detail">Envíos propios · coordinalo por WhatsApp</div>
+        </div>
+      </div>
+
+      <a class="contact-card cc-link" href="https://instagram.com/puntosandwich.ok" target="_blank" rel="noopener">
+        <div class="cc-icon cc-icon-ig">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r="1.05" fill="currentColor" stroke="none"/></svg>
+        </div>
+        <div class="cc-body">
+          <div class="cc-label">Instagram</div>
+          <div class="cc-detail">@puntosandwich.ok</div>
+        </div>
+        <span class="cc-arrow">↗</span>
+      </a>
+
+      <div class="contact-card cc-wide">
+        <div class="cc-icon">🕒</div>
+        <div class="cc-body">
+          <div class="cc-label">Horarios</div>
+          <div class="cc-detail">Todos los días de 10:00 a 00:00</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  Punto Sandwich · Comodoro Rivadavia
+</footer>
+
+<div class="cart-bar" id="cartBar">
+  <div class="cart-bar-inner">
+    <div class="cart-info">
+      <div class="count-line" id="barCountLine">0 productos</div>
+      <div class="total" id="barTotal">$0</div>
+    </div>
+    <button class="view-order-btn" id="viewOrderBtn" type="button">
+      🛒 Ver pedido
+    </button>
+  </div>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Tu pedido">
+  <div class="drawer-head">
+    <h2>🛒 Tu pedido</h2>
+    <button class="drawer-close" id="drawerClose" type="button" aria-label="Cerrar">✕</button>
+  </div>
+  <div class="drawer-body" id="drawerBody"></div>
+</div>
+
+<div class="photo-lightbox" id="photoLightbox" role="dialog" aria-modal="true" aria-label="Foto ampliada">
+  <button class="photo-lightbox-close" id="photoLightboxClose" type="button" aria-label="Cerrar">✕</button>
+  <img id="photoLightboxImg" src="" alt="">
+  <div class="photo-lightbox-caption" id="photoLightboxCaption"></div>
+</div>
+
+<script>
+(function(){
+  // Reemplaza alert() del navegador por un cartel propio. alert() queda
+  // bloqueado sin avisar (no aparece, y no frena el resto del código) cuando
+  // la página se muestra adentro de un iframe con "sandbox" (como en una
+  // vista previa/demo) — este cartel funciona siempre, tanto ahí como en el
+  // sitio real ya desplegado.
+  var modalOverlay = document.getElementById("modalOverlay");
+  var modalMsg = document.getElementById("modalMsg");
+  var modalOkBtn = document.getElementById("modalOkBtn");
+  function showAlert(message){
+    return new Promise(function(resolve){
+      modalMsg.textContent = message;
+      modalOverlay.hidden = false;
+      function onOk(){
+        modalOverlay.hidden = true;
+        modalOkBtn.removeEventListener("click", onOk);
+        resolve();
+      }
+      modalOkBtn.addEventListener("click", onOk);
+    });
+  }
+
+  var WA_NUMBER = "5492974120010";
+  // Se pone en true apenas /api/shop-status contesta "cerrado" — bloquea el
+  // botón final de pedir (goToWhatsApp / goToMercadoPago) además del cartel
+  // que se muestra arriba de todo.
+  var SHOP_CLOSED = false;
+
+  function checkShopStatus(){
+    fetch("/api/shop-status").then(function(resp){ return resp.json(); }).then(function(data){
+      if (data && data.status === "cerrado"){
+        SHOP_CLOSED = true;
+        var banner = document.getElementById("closedBanner");
+        if (banner) banner.hidden = false;
+      }
+    }).catch(function(){
+      // Sin respuesta clara, no bloqueamos el pedido — mejor dejar que
+      // el cliente intente y que el backend lo frene si hace falta.
+    });
+  }
+
+  // Saca del menú los productos que el panel marcó como "Oculto" (por
+  // ejemplo, algo que se quedó sin stock). Las tarjetas ya están armadas en
+  // el DOM para cuando esto responde, así que simplemente se quitan las que
+  // correspondan; si una sección queda sin ninguna, se oculta el título
+  // también para no dejar un encabezado vacío.
+  // Un id "oculto" puede ser:
+  //  - el id de un producto entero ("sprite") -> se saca toda la tarjeta.
+  //  - "productoId__tamaño" ("sprite__500ml") -> se saca solo esa opción de
+  //    tamaño (por ejemplo, si hay Sprite de 1.5 L pero no de 500 ml). Si
+  //    terminan ocultos todos los tamaños de un producto, la tarjeta entera
+  //    se saca igual que si se hubiera ocultado el producto completo.
+  function applyHiddenProducts(){
+    fetch("/api/products-visibility").then(function(resp){ return resp.json(); }).then(function(data){
+      var hidden = (data && data.hidden) || [];
+      var wholeIds = {};
+      var sizeHidesByProduct = {};
+      hidden.forEach(function(id){
+        var sep = id.indexOf("__");
+        if (sep === -1){
+          wholeIds[id] = true;
+        } else {
+          var productId = id.slice(0, sep);
+          var sizeKey = id.slice(sep + 2);
+          if (!sizeHidesByProduct[productId]) sizeHidesByProduct[productId] = [];
+          sizeHidesByProduct[productId].push(sizeKey);
+        }
+      });
+
+      Object.keys(wholeIds).forEach(function(id){
+        var card = document.getElementById("card-" + id);
+        if (card) card.remove();
+      });
+
+      Object.keys(sizeHidesByProduct).forEach(function(productId){
+        if (wholeIds[productId]) return; // ya se sacó la tarjeta entera
+        var card = document.getElementById("card-" + productId);
+        if (!card) return;
+        var hiddenSizeKeys = sizeHidesByProduct[productId];
+        hiddenSizeKeys.forEach(function(sizeKey){
+          var pill = card.querySelector('.size-pill[data-size="' + sizeKey + '"]');
+          if (pill) pill.remove();
+        });
+        var remainingPills = card.querySelectorAll(".size-pill");
+        if (remainingPills.length === 0){
+          // No queda ningún tamaño disponible para pedir: sacamos la
+          // tarjeta entera, no tiene sentido dejarla vacía.
+          card.remove();
+          return;
+        }
+        // Si el tamaño que estaba seleccionado por defecto quedó oculto,
+        // pasamos la selección al primer tamaño que sigue disponible.
+        if (hiddenSizeKeys.indexOf(cardSelection[productId]) !== -1){
+          cardSelection[productId] = remainingPills[0].getAttribute("data-size");
+          refreshCard(productId);
+        }
+      });
+
+      ["menuGrid", "hambGrid", "pizzaGrid", "extrasGrid", "bebidasGrid"].forEach(function(gridId){
+        var grid = document.getElementById(gridId);
+        if (grid && grid.children.length === 0){
+          grid.style.display = "none";
+          var head = grid.previousElementSibling;
+          if (head && head.classList.contains("section-head")) head.style.display = "none";
+        }
+      });
+    }).catch(function(){
+      // Sin respuesta clara, mostramos el menú completo tal cual.
+    });
+  }
+  var STORE_ADDRESS = "Av. Chile 1515, Comodoro Rivadavia, Chubut, Argentina";
+
+  // Exact pin for the store (Av. Chile 1515), confirmed via Google Maps —
+  // used only to convert a tap on our own mini-map into a real approximate
+  // lat/lng for the WhatsApp link below.
+  var STORE_LAT = -45.8830467;
+  var STORE_LNG = -67.5378765;
+  // Straight-line distance underestimates real streets, so it's scaled up
+  // to approximate driving distance.
+  var ROUTE_FACTOR = 1.3;
+  // Delivery fare, base + per km — the numbers the shop set.
+  var DELIVERY_BASE_FARE = 1500;
+  var DELIVERY_PER_KM = 950;
+
+  // A published page can't call a live routing/Uber/Maps API (network is
+  // locked to a small CDN allowlist), can't load real map tiles either (same
+  // reason — only a couple of script CDNs are allowed, not arbitrary map
+  // images), and this hosting sandbox blocks the browser's own geolocation
+  // prompt for most visitors. So instead of a real map, the page draws its
+  // own small schematic one — a simplified north/south strip of Comodoro
+  // with the store and a few known reference points (Km 3-8, Km 11-17, Zona
+  // Sur, Rada Tilly) placed roughly to scale — and the customer just taps
+  // where they are. No typing, no leaving the page. It's not GPS-precise,
+  // but it's the same order of accuracy as a customer's own guess at "how
+  // many km", except the shop set the scale instead of the customer guessing.
+  var MAP_PX_PER_KM = 10;
+  var MAP_STORE_PX = { x: 160, y: 200 };
+  var MAP_VIEWBOX = { w: 320, h: 420 };
+  // Reference points, placed to scale from the store using the same
+  // representative distances the shop's zone pricing used before.
+  var MAP_LANDMARKS = [
+    { label: "Km 3 a Km 8", x: 160, y: 150 },
+    { label: "Km 11 a Km 17", x: 160, y: 70 },
+    { label: "Zona Sur", x: 145, y: 260 },
+    { label: "Rada Tilly", x: 160, y: 360 }
+  ];
+  // Barrios: researched approximate side + distance from the store (no
+  // official cadastral boundaries exist for us to draw exact shapes, so
+  // these are best-estimate placements — flag any that look wrong and
+  // we'll recalibrate that one). "zona" groups them the way the shop's
+  // own barrio list does (for the dropdown); "lado" is the researched real
+  // side used to place the point. Recalibrated against two real barrio
+  // maps of Comodoro the client shared: the store (Av. Chile) sits right
+  // next to Juan XXIII, on Av. Kennedy, so that one is placed almost on
+  // top of the store; Centro is the real downtown, behind the port — north
+  // of the store, not adjacent to it — and the coastal cluster around it
+  // (9 de Julio, 13 de Diciembre, Centro Cívico General Solari) and the
+  // inland cluster between it and the store (San Cayetano, Quirno Costa,
+  // Ceferino Namuncurá, José Fuchs, Julio A. Roca, San Isidro Labrador)
+  // moved to the north side to match. Barrios not shown on either map
+  // stayed at their previous best-estimate.
+  var BARRIOS = [
+    {key:"9-de-julio", name:"9 de Julio", zona:"sur", lado:"norte", km:2.8},
+    {key:"13-de-diciembre", name:"13 de Diciembre", zona:"sur", lado:"norte", km:2.9},
+    {key:"30-de-octubre", name:"30 de Octubre", zona:"sur", lado:"sur", km:1.5},
+    {key:"acceso-sur-fraccion-14-y-15", name:"Acceso Sur – Fracción 14 y 15", zona:"sur", lado:"sur", km:4.0},
+    {key:"acceso-sur-industrial", name:"Acceso Sur – Industrial", zona:"sur", lado:"sur", km:3.8},
+    {key:"balcon-del-paraiso", name:"Balcón del Paraíso", zona:"sur", lado:"sur", km:4.7},
+    {key:"bella-vista-oeste", name:"Bella Vista Oeste", zona:"sur", lado:"sur", km:5.8},
+    {key:"bella-vista-sur", name:"Bella Vista Sur", zona:"sur", lado:"sur", km:3.0},
+    {key:"ceferino-namuncura", name:"Ceferino Namuncurá", zona:"sur", lado:"norte", km:1.5},
+    {key:"centro", name:"Centro", zona:"sur", lado:"norte", km:3.5},
+    {key:"centro-civico-general-solari", name:"Centro Cívico General Solari", zona:"sur", lado:"norte", km:3.6},
+    {key:"chacras-canadones-la-francesa-y-las-lenas", name:"Chacras Cañadones, La Francesa y Las Leñas", zona:"sur", lado:"sur", km:3.7},
+    {key:"chacra-la-herradura", name:"Chacra La Herradura", zona:"sur", lado:"sur", km:13.8},
+    {key:"chacras-loteo-freijoo-vento-y-otros", name:"Chacras Loteo Freijoo, Vento y otros", zona:"sur", lado:"sur", km:4.0},
+    {key:"chacras-loteo-quitani-y-otros", name:"Chacras Loteo Quitani y otros", zona:"sur", lado:"sur", km:6.1},
+    {key:"cordon-forestal-juan-manuel-feeney", name:"Cordón Forestal Juan Manuel Feeney", zona:"sur", lado:"sur", km:1.5},
+    {key:"dr-quirno-costa", name:"Dr. Quirno Costa", zona:"sur", lado:"norte", km:1.0},
+    {key:"el-atardecer", name:"El Atardecer", zona:"sur", lado:"sur", km:5.1},
+    {key:"union-ex-radio-estacion-ypf", name:"Unión (ex Radio Estación YPF)", zona:"sur", lado:"norte", km:3.5},
+    {key:"francisco-pietrobelli", name:"Francisco Pietrobelli", zona:"sur", lado:"norte", km:4.3},
+    {key:"gobernador-roque-gonzalez", name:"Gobernador Roque González", zona:"sur", lado:"sur", km:9.0},
+    {key:"humberto-beghin", name:"Humberto Beghin", zona:"sur", lado:"sur", km:2.5},
+    {key:"jorge-newbery", name:"Jorge Newbery", zona:"sur", lado:"norte", km:4.0},
+    {key:"jose-fuchs", name:"José Fuchs", zona:"sur", lado:"norte", km:2.0},
+    {key:"juan-xxiii", name:"Juan XXIII", zona:"sur", lado:"sur", km:0.2},
+    {key:"julio-argentino-roca", name:"Julio Argentino Roca", zona:"sur", lado:"norte", km:1.8},
+    {key:"la-floresta", name:"La Floresta", zona:"sur", lado:"norte", km:3.6},
+    {key:"las-flores", name:"Las Flores", zona:"sur", lado:"norte", km:3.8},
+    {key:"los-arenales", name:"Los Arenales", zona:"sur", lado:"sur", km:5.8},
+    {key:"los-bretes", name:"Los Bretes", zona:"sur", lado:"sur", km:2.0},
+    {key:"maestro-isidro-quiroga", name:"Maestro Isidro Quiroga", zona:"sur", lado:"sur", km:0.4},
+    {key:"malvinas-argentinas", name:"Malvinas Argentinas", zona:"sur", lado:"sur", km:3.0},
+    {key:"mario-abel-amaya", name:"Mario Abel Amaya", zona:"sur", lado:"sur", km:0.8},
+    {key:"maximo-abasolo", name:"Máximo Abásolo", zona:"sur", lado:"norte", km:3.0},
+    {key:"monsenor-argimiro-daniel-moure", name:"Monseñor Argimiro Daniel Moure", zona:"sur", lado:"sur", km:0.5},
+    {key:"parque-industrial", name:"Parque Industrial", zona:"sur", lado:"sur", km:3.0},
+    {key:"pueyrredon", name:"Pueyrredón", zona:"sur", lado:"sur", km:1.2},
+    {key:"san-cayetano", name:"San Cayetano", zona:"sur", lado:"norte", km:1.2},
+    {key:"san-isidro-labrador", name:"San Isidro Labrador", zona:"sur", lado:"norte", km:0.8},
+    {key:"san-martin", name:"San Martín", zona:"sur", lado:"norte", km:3.3},
+    {key:"stella-maris", name:"Stella Maris", zona:"sur", lado:"sur", km:2.2},
+    {key:"25-de-mayo", name:"25 de Mayo", zona:"norte", lado:"norte", km:8.5},
+    {key:"acceso-noroeste", name:"Acceso Noroeste", zona:"norte", lado:"norte", km:10.8},
+    {key:"ara-san-juan", name:"Ara San Juan", zona:"norte", lado:"norte", km:10.5},
+    {key:"astra", name:"Astra", zona:"norte", lado:"norte", km:17.0},
+    {key:"bella-vista-norte", name:"Bella Vista Norte", zona:"norte", lado:"norte", km:7.1},
+    {key:"caleta-cordova", name:"Caleta Córdova", zona:"norte", lado:"norte", km:19.3},
+    {key:"centenario", name:"Centenario", zona:"norte", lado:"norte", km:12.2},
+    {key:"chacras-el-faro", name:"Chacras El Faro", zona:"norte", lado:"norte", km:16.9},
+    {key:"chacras-km-17", name:"Chacras Km 17", zona:"norte", lado:"norte", km:13.4},
+    {key:"chacras-km-18", name:"Chacras Km 18", zona:"norte", lado:"norte", km:14.6},
+    {key:"ciudadela", name:"Ciudadela", zona:"norte", lado:"norte", km:10.2},
+    {key:"cuarteles-de-chacabuco", name:"Cuarteles de Chacabuco", zona:"norte", lado:"norte", km:13.3},
+    {key:"diadema-argentina", name:"Diadema Argentina", zona:"norte", lado:"norte", km:15.4},
+    {key:"dr-rene-geronimo-favaloro", name:"Dr. René Gerónimo Favaloro", zona:"norte", lado:"norte", km:12.6},
+    {key:"don-bosco-km-8", name:"Don Bosco Km 8", zona:"norte", lado:"norte", km:13.2},
+    {key:"gasoducto", name:"Gasoducto", zona:"norte", lado:"norte", km:10.2},
+    {key:"general-enrique-mosconi", name:"General Enrique Mosconi", zona:"norte", lado:"norte", km:7.0},
+    {key:"gesta-de-malvinas", name:"Gesta de Malvinas", zona:"norte", lado:"norte", km:10.9},
+    {key:"gobernador-fontana", name:"Gobernador Fontana", zona:"norte", lado:"norte", km:13.1},
+    {key:"guemes", name:"Güemes", zona:"norte", lado:"norte", km:6.7},
+    {key:"juan-jose-castelli", name:"Juan José Castelli", zona:"norte", lado:"norte", km:9.0},
+    {key:"laprida", name:"Laprida", zona:"norte", lado:"norte", km:6.0},
+    {key:"las-orquideas", name:"Las Orquídeas", zona:"norte", lado:"norte", km:10.1},
+    {key:"manantial-rosales", name:"Manantial Rosales", zona:"norte", lado:"norte", km:6.7},
+    {key:"nicolas-rodriguez-pena", name:"Nicolás Rodríguez Peña", zona:"norte", lado:"norte", km:9.4},
+    {key:"nuestra-senora-de-la-divina-providencia", name:"Nuestra Señora de la Divina Providencia", zona:"norte", lado:"norte", km:5.8},
+    {key:"padre-juan-corti", name:"Padre Juan Corti", zona:"norte", lado:"norte", km:9.0},
+    {key:"presidente-roberto-m-ortiz", name:"Presidente Roberto M. Ortiz", zona:"norte", lado:"norte", km:9.7},
+    {key:"prospero-palazzo", name:"Próspero Palazzo", zona:"norte", lado:"norte", km:11.0},
+    {key:"restinga-ali", name:"Restinga Alí", zona:"norte", lado:"norte", km:14.2},
+    {key:"saavedra", name:"Saavedra", zona:"norte", lado:"norte", km:5.3},
+    {key:"sarmiento", name:"Sarmiento", zona:"norte", lado:"norte", km:7.7},
+    {key:"standard-norte", name:"Standard Norte", zona:"norte", lado:"norte", km:13.2},
+    {key:"standard-sur", name:"Standard Sur", zona:"norte", lado:"norte", km:12.6},
+    {key:"zona-de-aeropuerto", name:"Zona de Aeropuerto", zona:"norte", lado:"norte", km:11.6},
+    {key:"franja-forestal-cerro-de-la-cruz", name:"Franja Forestal Cerro de la Cruz", zona:"norte", lado:"norte", km:11.5}
+  ];
+  function getBarrio(key){
+    for (var i = 0; i < BARRIOS.length; i++) if (BARRIOS[i].key === key) return BARRIOS[i];
+    return null;
+  }
+  // Places a barrio on the same north/south schematic line the streets use.
+  // The researched km is already a real representative distance (not a raw
+  // straight-line guess), so — like the street model — no extra route
+  // factor is layered on top of it.
+  function computeBarrioPoint(barrio){
+    var sign = barrio.lado === "norte" ? 1 : (barrio.lado === "sur" ? -1 : (barrio.km > 0 ? -1 : 0));
+    var py = MAP_STORE_PX.y - sign * barrio.km * MAP_PX_PER_KM;
+    var px = MAP_STORE_PX.x;
+    var est = mapPointToEstimateRaw(px, py, 1);
+    return { px: px, py: py, km: est.km, lat: est.lat, lng: est.lng };
+  }
+  function buildDeliveryMapSvg(pin){
+    var sx = MAP_STORE_PX.x, sy = MAP_STORE_PX.y;
+    var rings = [2, 5, 10].map(function(km){
+      var r = km * MAP_PX_PER_KM;
+      var lx = sx + r * 0.66, ly = sy - r * 0.75;
+      return '<circle cx="' + sx + '" cy="' + sy + '" r="' + r + '" fill="none" stroke="rgba(255,255,255,.16)" stroke-dasharray="3 4"/>' +
+        '<text x="' + lx + '" y="' + ly + '" class="map-ring-label">' + km + ' km</text>';
+    }).join("");
+    var landmarks = MAP_LANDMARKS.map(function(p){
+      return '<circle cx="' + p.x + '" cy="' + p.y + '" r="3" class="map-landmark-dot"/>' +
+        '<text x="' + p.x + '" y="' + (p.y - 8) + '" class="map-landmark-label">' + p.label + '</text>';
+    }).join("");
+    var pxClamped, pyClamped, line = "", label = "", pinMark = "";
+    if (pin){
+      pxClamped = Math.max(6, Math.min(MAP_VIEWBOX.w - 6, pin.px));
+      pyClamped = Math.max(6, Math.min(MAP_VIEWBOX.h - 6, pin.py));
+      line = '<line x1="' + sx + '" y1="' + sy + '" x2="' + pxClamped + '" y2="' + pyClamped + '" class="map-route-line"/>';
+      pinMark = '<g class="map-pin" transform="translate(' + pxClamped + ',' + pyClamped + ')">' +
+          '<circle r="9" class="map-pin-halo"/>' +
+          '<circle r="4.5" class="map-pin-dot"/>' +
+        '</g>';
+      if (pin.km != null && pin.fee != null){
+        var mx = (sx + pxClamped) / 2, my = (sy + pyClamped) / 2;
+        var text = pin.km.toFixed(1) + " km · " + fmt(pin.fee);
+        var boxW = 26 + text.length * 4.6;
+        label = '<g transform="translate(' + mx + ',' + my + ')">' +
+            '<rect x="' + (-boxW / 2) + '" y="-11" width="' + boxW + '" height="20" rx="9" class="map-route-label-bg"/>' +
+            '<text x="0" y="3" class="map-route-label">' + text + '</text>' +
+          '</g>';
+      }
+    }
+    return '<svg id="deliveryMapSvg" viewBox="0 0 ' + MAP_VIEWBOX.w + ' ' + MAP_VIEWBOX.h + '" class="delivery-map" role="img" aria-label="Mapa de calor para marcar tu ubicación de entrega">' +
+      '<defs><radialGradient id="heatGradient" cx="' + sx + '" cy="' + sy + '" r="260" gradientUnits="userSpaceOnUse">' +
+        '<stop offset="0%" stop-color="#3ab54a" stop-opacity=".6"/>' +
+        '<stop offset="35%" stop-color="#f7c72c" stop-opacity=".55"/>' +
+        '<stop offset="65%" stop-color="#f5842a" stop-opacity=".55"/>' +
+        '<stop offset="100%" stop-color="#e14b4b" stop-opacity=".6"/>' +
+      '</radialGradient></defs>' +
+      '<rect x="0" y="0" width="' + MAP_VIEWBOX.w + '" height="' + MAP_VIEWBOX.h + '" class="map-land"/>' +
+      '<rect x="0" y="0" width="' + MAP_VIEWBOX.w + '" height="' + MAP_VIEWBOX.h + '" style="fill:url(#heatGradient)"/>' +
+      '<path d="M264,0 C284,60 240,120 272,180 C300,240 250,300 278,360 C292,392 300,410 320,420 L320,0 Z" class="map-sea"/>' +
+      rings +
+      landmarks +
+      '<text x="' + sx + '" y="18" class="map-compass">N ↑</text>' +
+      line +
+      '<g class="map-store">' +
+        '<circle cx="' + sx + '" cy="' + sy + '" r="7" class="map-store-dot"/>' +
+        '<text x="' + sx + '" y="' + (sy + 20) + '" class="map-store-label">Tu local</text>' +
+      '</g>' +
+      pinMark +
+      label +
+    '</svg>';
+  }
+  function computeDeliveryFee(km){
+    if (!km || isNaN(km) || km <= 0) return null;
+    return Math.round((DELIVERY_BASE_FARE + DELIVERY_PER_KM * km) / 100) * 100;
+  }
+  // Converts a point (in the map's own SVG units) into km from the store
+  // and, from there, an approximate real lat/lng (equirectangular — plenty
+  // accurate at this scale) so the WhatsApp message can still carry a real
+  // Google Maps pin even though nothing was typed or pasted.
+  function mapPointToEstimateRaw(px, py, routeFactor){
+    var kmNorth = (MAP_STORE_PX.y - py) / MAP_PX_PER_KM;
+    var kmEast = (px - MAP_STORE_PX.x) / MAP_PX_PER_KM;
+    var straightKm = Math.sqrt(kmNorth * kmNorth + kmEast * kmEast);
+    var lat = STORE_LAT + (kmNorth / 111);
+    var lng = STORE_LNG + (kmEast / (111 * Math.cos(STORE_LAT * Math.PI / 180)));
+    return { km: straightKm * routeFactor, lat: lat, lng: lng };
+  }
+  function mapPointToEstimate(px, py){
+    return mapPointToEstimateRaw(px, py, ROUTE_FACTOR);
+  }
+  // Puntos: two sizes each.
+  var ITEMS = [
+    {id:"milanesa-carne", name:"Punto Milanesa Carne", ing:"Milanesa de carne, lechuga, tomate, jamón, queso y huevo", fries:true,
+      sizes:[{key:"simple", label:"Punto Simple", cm:"23 cm", price:24000},{key:"xl", label:"Punto XL", cm:"40 cm", price:46000}]},
+    {id:"milanesa-napolitana", name:"Punto Milanesa Napolitana", ing:"Milanesa napolitana, tomate, aceite de ajo, jamón, queso y huevo", fries:true,
+      sizes:[{key:"simple", label:"Punto Simple", cm:"23 cm", price:29000},{key:"xl", label:"Punto XL", cm:"40 cm", price:56000}]},
+    {id:"milanesa-pollo", name:"Punto Milanesa Pollo", ing:"Milanesa de pollo, lechuga, tomate, jamón, queso y huevo", fries:true,
+      sizes:[{key:"simple", label:"Punto Simple", cm:"23 cm", price:23000},{key:"xl", label:"Punto XL", cm:"40 cm", price:44000}]},
+    {id:"lomo", name:"Punto Lomo", ing:"Lomo, lechuga, tomate, jamón, queso y huevo", fries:true,
+      sizes:[{key:"simple", label:"Punto Simple", cm:"23 cm", price:29000},{key:"xl", label:"Punto XL", cm:"40 cm", price:56000}]},
+    {id:"bife-ancho", name:"Punto Bife Ancho", ing:"Bife ancho, lechuga, tomate, jamón, queso y huevo", fries:true,
+      sizes:[{key:"simple", label:"Punto Simple", cm:"23 cm", price:29000},{key:"xl", label:"Punto XL", cm:"40 cm", price:56000}]},
+    {id:"bondiola", name:"Punto Bondiola", ing:"Bondiola desmechada, queso cheddar, queso tybo, queso cremoso, panceta y huevo", fries:true,
+      sizes:[{key:"simple", label:"Punto Simple", cm:"23 cm", price:27000},{key:"xl", label:"Punto XL", cm:"40 cm", price:52000}]},
+    {id:"molleja", name:"Punto Molleja", ing:"Mollejas, jamón, queso, huevo y cebolla caramelizada", fries:true,
+      sizes:[{key:"simple", label:"Punto Simple", cm:"23 cm", price:29000},{key:"xl", label:"Punto XL", cm:"40 cm", price:56000}]}
+  ];
+
+  // Hamburguesas: one product, Simple/Doble as size choices (same pattern as
+  // the Puntos above), plus an optional "medallón extra" add-on.
+  var HAMBURGUESAS = [
+    {id:"hamburguesa", name:"Punto Burger Carne", ing:"Panceta, cheddar, cebolla caramelizada, mayo alioli.", fries:true,
+      sizes:[{key:"simple", label:"Simple", price:14000},{key:"doble", label:"Doble", price:17000}],
+      addons:[{key:"medallon", label:"Agregar medallón extra", price:3500}]},
+    {id:"hamburguesa-pollo", name:"Punto Burger Pollo", ing:"Panceta, cheddar, lechuga, tomate y huevo.", fries:true,
+      sizes:[{key:"simple", label:"Simple", price:13000},{key:"doble", label:"Doble", price:16000}],
+      addons:[{key:"medallon", label:"Agregar medallón extra", price:3000}]}
+  ];
+
+  // Pizzas: no fries badge. Ingredients are the standard composition for
+  // each name — worth a quick confirm with the client in case their recipe differs.
+  var PIZZAS = [
+    {id:"pizza-muzza", name:"Muzza", ing:"Salsa de tomate, muzzarella y aceitunas.", fries:false, sizes:[{key:"unica", label:"Muzza", price:22000}]},
+    {id:"pizza-especial", name:"Especial", ing:"Muzzarella, jamón y morrones.", fries:false, sizes:[{key:"unica", label:"Especial", price:26000}]},
+    {id:"pizza-primavera", name:"Primavera", ing:"Muzzarella, morrones, tomate y huevo duro.", fries:false, sizes:[{key:"unica", label:"Primavera", price:28000}]},
+    {id:"pizza-napolitana", name:"Napolitana", ing:"Muzzarella, rodajas de tomate, ajo y orégano.", fries:false, sizes:[{key:"unica", label:"Napolitana", price:28000}]},
+    {id:"pizza-paisana", name:"Paisana", ing:"Muzzarella, papa y huevo frito.", fries:false, sizes:[{key:"unica", label:"Paisana", price:34000}]}
+  ];
+
+  // Extras
+  var EXTRAS = [
+    {id:"papas-fritas", name:"Papas Fritas", ing:"Porción de papas fritas.", fries:false,
+      sizes:[{key:"300g", label:"300 g", price:10000},{key:"500g", label:"500 g", price:15000}]},
+    // Precio puesto igual al de Papas Fritas por ahora (no nos pasaron uno
+    // distinto) — confirmar con el cliente si las sazonadas van a costar más.
+    {id:"papas-sazonadas", name:"Papas Sazonadas", ing:"Porción de papas fritas con condimentos de la casa.", fries:false,
+      sizes:[{key:"300g", label:"300 g", price:10000},{key:"500g", label:"500 g", price:15000}]}
+  ];
+
+  // Bebidas — sin foto y sin descripción a propósito: es una lista simple de
+  // nombre + tamaño/precio (ver buildCard: noPhoto:true salta tanto el
+  // recuadro de foto como el texto de ingredientes).
+  var BEBIDAS = [
+    {id:"jugo-fresh", name:"Jugo Fresh", noPhoto:true, fries:false,
+      sizes:[{key:"500ml", label:"500 ml", price:2000},{key:"1.5l", label:"1.5 L", price:3500}]},
+    // Pepsi, 7UP, Paso de los Toros, Mirinda y H2OH! van todas al mismo
+    // precio, pero separadas como productos propios (a pedido del cliente)
+    // para que el pedido diga con claridad cuál de todas se pidió.
+    {id:"pepsi", name:"Pepsi", noPhoto:true, fries:false,
+      sizes:[{key:"500ml", label:"500 ml", price:2500},{key:"1.5l", label:"1.5 L", price:4000}]},
+    {id:"7up", name:"7UP", noPhoto:true, fries:false,
+      sizes:[{key:"500ml", label:"500 ml", price:2500},{key:"1.5l", label:"1.5 L", price:4000}]},
+    {id:"paso-de-los-toros", name:"Paso de los Toros", noPhoto:true, fries:false,
+      sizes:[{key:"500ml", label:"500 ml", price:2500},{key:"1.5l", label:"1.5 L", price:4000}]},
+    {id:"mirinda", name:"Mirinda", noPhoto:true, fries:false,
+      sizes:[{key:"500ml", label:"500 ml", price:2500},{key:"1.5l", label:"1.5 L", price:4000}]},
+    {id:"h2oh", name:"H2OH!", noPhoto:true, fries:false,
+      sizes:[{key:"500ml", label:"500 ml", price:2500},{key:"1.5l", label:"1.5 L", price:4000}]},
+    {id:"pepsi-lata", name:"Pepsi Lata", noPhoto:true, fries:false,
+      sizes:[{key:"354ml", label:"354 ml", price:2000}]},
+    {id:"gatorade", name:"Gatorade", noPhoto:true, fries:false,
+      sizes:[{key:"500ml", label:"500 ml", price:2500},{key:"750ml", label:"750 ml", price:4000}]},
+    // Coca-Cola, Sprite y Fanta: mismo precio, mismo motivo de separación
+    // que Pepsi y compañía arriba.
+    {id:"coca-cola", name:"Coca-Cola", noPhoto:true, fries:false,
+      sizes:[{key:"500ml", label:"500 ml", price:3000},{key:"1.5l", label:"1.5 L", price:5500},{key:"2.25l", label:"2.25 L", price:7000}]},
+    {id:"sprite", name:"Sprite", noPhoto:true, fries:false,
+      sizes:[{key:"500ml", label:"500 ml", price:3000},{key:"1.5l", label:"1.5 L", price:5500},{key:"2.25l", label:"2.25 L", price:7000}]},
+    {id:"fanta", name:"Fanta", noPhoto:true, fries:false,
+      sizes:[{key:"500ml", label:"500 ml", price:3000},{key:"1.5l", label:"1.5 L", price:5500},{key:"2.25l", label:"2.25 L", price:7000}]},
+    {id:"speed", name:"Speed", noPhoto:true, fries:false,
+      sizes:[{key:"chica", label:"Chica", price:2500},{key:"grande", label:"Grande", price:4000}]},
+    {id:"agua", name:"Agua", noPhoto:true, fries:false,
+      sizes:[{key:"500ml", label:"500 ml", price:3000}]}
+  ];
+
+  var ALL_ITEMS = ITEMS.concat(HAMBURGUESAS, PIZZAS, EXTRAS, BEBIDAS);
+
+  var cart = {}; // "itemId__sizeKey" or "itemId__sizeKey+addonKey" -> qty
+  var cardSelection = {}; // itemId -> currently chosen size key in the grid card
+  var cardAddonSelection = {}; // itemId -> currently toggled addon key (or "" for none)
+  var cardFriesSelection = {}; // itemId -> "papas" or "sazonadas", only used when item.fries is true
+
+  function fmt(n){
+    return "$" + n.toLocaleString("es-AR");
+  }
+  function fmtPrice(price){
+    return price == null ? "A confirmar" : fmt(price);
+  }
+
+  // friesKey ("papas" / "sazonadas") only matters for items with fries:true —
+  // it's tacked on with "~" so it can't collide with the addon's "+" separator.
+  function compKey(itemId, sizeKey, addonKey, friesKey){
+    return itemId + "__" + sizeKey + (addonKey ? "+" + addonKey : "") + (friesKey ? "~" + friesKey : "");
+  }
+  function parseKey(key){
+    var doubleSep = key.indexOf("__");
+    var itemId = key.slice(0, doubleSep);
+    var rest = key.slice(doubleSep + 2);
+    var friesKey = "";
+    var tildeSep = rest.indexOf("~");
+    if (tildeSep !== -1){
+      friesKey = rest.slice(tildeSep + 1);
+      rest = rest.slice(0, tildeSep);
+    }
+    var plusSep = rest.indexOf("+");
+    var sizeKey = plusSep === -1 ? rest : rest.slice(0, plusSep);
+    var addonKey = plusSep === -1 ? "" : rest.slice(plusSep + 1);
+    return {itemId:itemId, sizeKey:sizeKey, addonKey:addonKey, friesKey:friesKey};
+  }
+  function getItem(itemId){
+    for (var i = 0; i < ALL_ITEMS.length; i++){ if (ALL_ITEMS[i].id === itemId) return ALL_ITEMS[i]; }
+    return null;
+  }
+  function getSize(item, sizeKey){
+    for (var i = 0; i < item.sizes.length; i++){ if (item.sizes[i].key === sizeKey) return item.sizes[i]; }
+    return null;
+  }
+  function getAddon(item, addonKey){
+    if (!addonKey || !item.addons) return null;
+    for (var i = 0; i < item.addons.length; i++){ if (item.addons[i].key === addonKey) return item.addons[i]; }
+    return null;
+  }
+  // for items with a real size choice (Puntos), spells out "Punto Simple (23 cm)";
+  // for single-size products (hamburguesas, pizzas, extras) the item name already says it all
+  function sizeQualifier(item, size){
+    if (item.sizes.length <= 1) return "";
+    return size.label + (size.cm ? " (" + size.cm + ")" : "");
+  }
+
+  // Real product photos supplied by the shop, matched to the item whose
+  // listed ingredients fit best. Items not listed here fall back to the
+  // icon placeholder below — ask the client for more shots to fill those in.
+  var PHOTOS = {
+    "pizza-especial": "images/pizza-especial.jpg",
+    "lomo": "images/lomo.jpg",
+    "molleja": "images/molleja.jpg",
+    "milanesa-carne": "images/milanesa-carne.jpg",
+    "milanesa-napolitana": "images/milanesa-napolitana.jpg",
+    "hamburguesa": "images/hamburguesa.jpg",
+    "pizza-paisana": "images/pizza-paisana.jpg",
+    "pizza-napolitana": "images/pizza-napolitana.jpg",
+    "pizza-muzza": "images/pizza-muzza.jpg",
+    "pizza-primavera": "images/pizza-primavera.jpg",
+    "papas-sazonadas": "images/papas-sazonadas.jpg",
+    "bife-ancho": "images/bife-ancho.jpg",
+    "bondiola": "images/bondiola.jpg",
+    "milanesa-pollo": "images/milanesa-pollo.jpg",
+    "papas-fritas": "images/papas-fritas.png"
+  };
+
+  var photoIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="6" width="18" height="14" rx="2"/><path d="M3 16l4.5-4.5a2 2 0 0 1 2.8 0L15 16"/><circle cx="16.5" cy="9.5" r="1.6"/></svg>';
+
+  // reflects the current cart qty (for the card's selected size + addon) and
+  // the selected size pill / addon chip onto an already-built card, without
+  // rebuilding it
+  function refreshCard(itemId){
+    var card = document.getElementById("card-" + itemId);
+    if (!card) return;
+    var item = getItem(itemId);
+    var sel = cardSelection[itemId];
+    var addonSel = cardAddonSelection[itemId] || "";
+    var friesSel = item && item.fries ? (cardFriesSelection[itemId] || "papas") : "";
+    card.querySelectorAll(".size-pill").forEach(function(p){
+      p.classList.toggle("selected", p.getAttribute("data-size") === sel);
+    });
+    card.querySelectorAll(".addon-chip").forEach(function(c){
+      c.classList.toggle("selected", c.getAttribute("data-addon") === addonSel);
+    });
+    card.querySelectorAll(".fries-opt").forEach(function(b){
+      b.classList.toggle("selected", b.getAttribute("data-fries") === friesSel);
+    });
+    var qty = cart[compKey(itemId, sel, addonSel, friesSel)] || 0;
+    var addFull = card.querySelector(".add-full");
+    var stepperFull = card.querySelector(".stepper-full");
+    if (qty > 0){
+      addFull.hidden = true;
+      stepperFull.hidden = false;
+      stepperFull.querySelector(".n").textContent = qty;
+    } else {
+      addFull.hidden = false;
+      stepperFull.hidden = true;
+    }
+  }
+
+  function buildCard(item){
+    var card = document.createElement("div");
+    card.className = "card";
+    card.id = "card-" + item.id;
+
+    var sizeRowHtml = "";
+    var soloPriceHtml = "";
+    if (item.sizes.length > 1){
+      var sizePillsHtml = item.sizes.map(function(s, idx){
+        var disabled = s.price == null;
+        return (
+          '<button type="button" class="size-pill' + (idx === 0 ? " selected" : "") + (disabled ? " disabled" : "") + '" data-size="' + s.key + '"' + (disabled ? " disabled" : "") + '>' +
+            '<span class="sp-label">' + s.label + '</span>' +
+            (s.cm ? '<span class="sp-cm">' + s.cm + '</span>' : "") +
+            '<span class="sp-price">' + fmtPrice(s.price) + '</span>' +
+          '</button>'
+        );
+      }).join("");
+      sizeRowHtml = '<div class="size-row">' + sizePillsHtml + '</div>';
+    } else {
+      // single-price product (hamburguesas, pizzas): no size pills, so show
+      // the price as its own tag instead
+      soloPriceHtml = '<div class="solo-price">' + fmtPrice(item.sizes[0].price) + '</div>';
+    }
+
+    var ingHtml = item.noPhoto
+      ? "" // bebidas: sin descripción, solo nombre + precio/tamaño
+      : (item.ing
+        ? '<p class="ing">' + item.ing + '</p>'
+        : '<p class="ing ing-pending">Ingredientes próximamente</p>');
+
+    // Fries come included with these items at no extra cost — this just
+    // lets the customer pick which kind, it's not an addon (no price change).
+    var friesHtml = item.fries
+      ? '<div class="fries-choice">' +
+          '<div class="fries-choice-label">🍟 Papas incluidas — elegí cuáles</div>' +
+          '<div class="fries-opts">' +
+            '<button type="button" class="fries-opt selected" data-fries="papas">Papas</button>' +
+            '<button type="button" class="fries-opt" data-fries="sazonadas">Papas sazonadas</button>' +
+          '</div>' +
+        '</div>'
+      : "";
+
+    var addonHtml = "";
+    if (item.addons && item.addons.length){
+      addonHtml = '<div class="addon-row">' + item.addons.map(function(a){
+        var disabled = a.price == null;
+        return (
+          '<button type="button" class="addon-chip' + (disabled ? " disabled" : "") + '" data-addon="' + a.key + '"' + (disabled ? " disabled" : "") + '>' +
+            '<span class="addon-check">✓</span>' +
+            '<span class="addon-label">' + a.label + '</span>' +
+            '<span class="addon-price">' + (disabled ? "a confirmar" : "+" + fmt(a.price)) + '</span>' +
+          '</button>'
+        );
+      }).join("") + '</div>';
+    }
+
+    var photoSrc = PHOTOS[item.id];
+    var photoHtml = item.noPhoto
+      ? "" // productos sin foto por diseño (bebidas): lista simple, sin cartel de "Foto próximamente"
+      : (photoSrc
+        ? '<div class="photo has-photo" tabindex="0" role="button" aria-label="Ver foto de ' + item.name + ' en grande"><img src="' + photoSrc + '" alt="' + item.name + '" loading="lazy"></div>'
+        : '<div class="photo">' + photoIcon + '<span>Foto próximamente</span></div>');
+
+    card.innerHTML =
+      photoHtml +
+      '<div class="card-body">' +
+        '<h3>' + item.name + '</h3>' +
+        soloPriceHtml +
+        ingHtml +
+        friesHtml +
+        sizeRowHtml +
+        addonHtml +
+        '<div class="add-zone">' +
+          '<button type="button" class="add-full">Agregar</button>' +
+          '<div class="stepper-full" hidden>' +
+            '<button type="button" data-act="minus" aria-label="Quitar uno">–</button>' +
+            '<span class="n">0</span>' +
+            '<button type="button" data-act="plus" aria-label="Agregar uno">+</button>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+
+    cardSelection[item.id] = item.sizes[0].key;
+    cardAddonSelection[item.id] = "";
+    if (item.fries) cardFriesSelection[item.id] = "papas";
+
+    card.querySelectorAll(".size-pill").forEach(function(pill){
+      if (pill.hasAttribute("disabled")) return; // price still pending, not selectable
+      pill.addEventListener("click", function(){
+        cardSelection[item.id] = pill.getAttribute("data-size");
+        refreshCard(item.id);
+      });
+    });
+
+    card.querySelectorAll(".addon-chip").forEach(function(chip){
+      if (chip.hasAttribute("disabled")) return; // price still pending, not selectable
+      chip.addEventListener("click", function(){
+        var key = chip.getAttribute("data-addon");
+        cardAddonSelection[item.id] = (cardAddonSelection[item.id] === key) ? "" : key;
+        refreshCard(item.id);
+      });
+    });
+
+    card.querySelectorAll(".fries-opt").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        cardFriesSelection[item.id] = btn.getAttribute("data-fries");
+        refreshCard(item.id);
+      });
+    });
+
+    // real photos are tappable — zoom into a fullscreen lightbox so the
+    // interaction feels alive instead of a static grid image
+    if (photoSrc){
+      var photoEl = card.querySelector(".photo.has-photo");
+      photoEl.addEventListener("click", function(){ openPhotoLightbox(photoSrc, item.name); });
+      photoEl.addEventListener("keydown", function(e){
+        if (e.key === "Enter" || e.key === " "){ e.preventDefault(); openPhotoLightbox(photoSrc, item.name); }
+      });
+    }
+
+    // all quantity changes go through the shared setQty() below, so the
+    // menu-grid card and the drawer never fall out of sync (and never get
+    // double-counted from two separate listeners on the same button).
+    card.querySelector('[data-act="minus"]').addEventListener("click", function(){
+      var sel = cardSelection[item.id], addonSel = cardAddonSelection[item.id] || "";
+      var friesSel = item.fries ? (cardFriesSelection[item.id] || "papas") : "";
+      setQty(item.id, sel, addonSel, friesSel, (cart[compKey(item.id, sel, addonSel, friesSel)] || 0) - 1);
+    });
+    card.querySelector('[data-act="plus"]').addEventListener("click", function(){
+      var sel = cardSelection[item.id], addonSel = cardAddonSelection[item.id] || "";
+      var friesSel = item.fries ? (cardFriesSelection[item.id] || "papas") : "";
+      setQty(item.id, sel, addonSel, friesSel, (cart[compKey(item.id, sel, addonSel, friesSel)] || 0) + 1);
+    });
+    card.querySelector(".add-full").addEventListener("click", function(){
+      var sel = cardSelection[item.id], addonSel = cardAddonSelection[item.id] || "";
+      var friesSel = item.fries ? (cardFriesSelection[item.id] || "papas") : "";
+      if (!cart[compKey(item.id, sel, addonSel, friesSel)]) setQty(item.id, sel, addonSel, friesSel, 1);
+    });
+
+    return card;
+  }
+
+  function renderSection(items, gridId){
+    var gridEl = document.getElementById(gridId);
+    items.forEach(function(item){ gridEl.appendChild(buildCard(item)); });
+  }
+
+  renderSection(ITEMS, "menuGrid");
+  renderSection(HAMBURGUESAS, "hambGrid");
+  renderSection(PIZZAS, "pizzaGrid");
+  renderSection(EXTRAS, "extrasGrid");
+  renderSection(BEBIDAS, "bebidasGrid");
+
+  var cartBar = document.getElementById("cartBar");
+  var barCountLine = document.getElementById("barCountLine");
+  var barTotal = document.getElementById("barTotal");
+  var chipCount = document.getElementById("chipCount");
+  var cartChipBtn = document.getElementById("cartChipBtn");
+  var viewOrderBtn = document.getElementById("viewOrderBtn");
+  var scrim = document.getElementById("scrim");
+  var drawer = document.getElementById("drawer");
+  var drawerClose = document.getElementById("drawerClose");
+  var drawerBody = document.getElementById("drawerBody");
+  var photoLightbox = document.getElementById("photoLightbox");
+  var photoLightboxImg = document.getElementById("photoLightboxImg");
+  var photoLightboxCaption = document.getElementById("photoLightboxCaption");
+  var photoLightboxClose = document.getElementById("photoLightboxClose");
+
+  // order-level state, kept outside the re-rendered card markup so typed
+  // text survives a re-render (qty changes, delivery toggle, etc.)
+  var order = { customerName: "", customerPhone: "", notes: "", deliveryMethod: "pickup", paymentMethod: "efectivo", addressNotes: "", distanceKm: "", lat: null, lng: null, pinPx: null, fee: null, barrioKey: "" };
+  function locationIsFixed(){ return !!order.barrioKey; }
+
+  // Flat, searchable list backing the "Barrio" combobox — built once since
+  // BARRIOS doesn't change at runtime. group is only used to print a small
+  // header the first time it changes in the filtered results.
+  var LOCATION_OPTIONS = (function(){
+    var opts = [{ value: "", label: "Otra dirección — marco el punto en el mapa", group: "" }];
+    BARRIOS.filter(function(b){ return b.zona === "norte"; }).forEach(function(b){
+      opts.push({ value: "barrio:" + b.key, label: b.name, group: "Zona Norte" });
+    });
+    BARRIOS.filter(function(b){ return b.zona === "sur"; }).forEach(function(b){
+      opts.push({ value: "barrio:" + b.key, label: b.name, group: "Zona Sur" });
+    });
+    return opts;
+  })();
+  function normalizeSearch(s){
+    return (s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().trim();
+  }
+  function currentLocationLabel(){
+    if (order.barrioKey){
+      var barrio = getBarrio(order.barrioKey);
+      return barrio ? barrio.name : "";
+    }
+    return "";
+  }
+
+  var waIconSvg = '<svg viewBox="0 0 32 32" fill="currentColor"><path d="M16.02 3C9.4 3 4 8.4 4 15.02c0 2.35.62 4.56 1.7 6.47L4 29l7.7-1.66a11.9 11.9 0 0 0 4.33.81h.01c6.62 0 12.02-5.4 12.02-12.02C28.06 8.4 22.66 3 16.02 3zm0 21.86h-.01a9.9 9.9 0 0 1-5.05-1.38l-.36-.21-3.77.81.8-3.68-.24-.38a9.83 9.83 0 0 1-1.5-5.2c0-5.46 4.45-9.9 9.94-9.9 2.65 0 5.15 1.04 7.02 2.92a9.86 9.86 0 0 1 2.9 7.01c0 5.47-4.45 9.91-9.93 9.91zm5.44-7.42c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.24-.46-2.36-1.46-.87-.78-1.46-1.74-1.63-2.04-.17-.3-.02-.46.13-.6.13-.13.3-.35.44-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.48-.5-.67-.5-.17 0-.37-.02-.57-.02s-.52.07-.8.37c-.27.3-1.04 1.02-1.04 2.5s1.07 2.9 1.22 3.1c.15.2 2.1 3.22 5.1 4.51.71.31 1.27.49 1.7.62.72.23 1.36.2 1.88.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35z"/></svg>';
+
+  function cartSummary(){
+    var count = 0, total = 0, lines = [];
+    Object.keys(cart).forEach(function(key){
+      var q = cart[key] || 0;
+      if (q <= 0) return;
+      var parsed = parseKey(key);
+      var item = getItem(parsed.itemId);
+      var size = item ? getSize(item, parsed.sizeKey) : null;
+      var addon = item ? getAddon(item, parsed.addonKey) : null;
+      if (!item || !size) return;
+      var unit = size.price + (addon ? addon.price : 0);
+      count += q;
+      total += q * unit;
+      // Fries choice never changes the price — it's just which kind the
+      // kitchen makes — so it's carried as a label, not folded into unit.
+      var friesLabel = item.fries ? (parsed.friesKey === "sazonadas" ? "Papas sazonadas" : "Papas") : null;
+      lines.push({key:key, item:item, size:size, addon:addon, friesLabel:friesLabel, qty:q, unit:unit, sub:q * unit});
+    });
+    return {count:count, total:total, lines:lines};
+  }
+
+  function renderCartBar(){
+    var s = cartSummary();
+    chipCount.textContent = s.count;
+    barCountLine.textContent = s.count + (s.count === 1 ? " producto" : " productos");
+    barTotal.textContent = fmt(s.total);
+    cartBar.classList.toggle("show", s.count > 0);
+  }
+
+  function setQty(itemId, sizeKey, addonKey, friesKey, qty){
+    var key = compKey(itemId, sizeKey, addonKey, friesKey);
+    if (qty <= 0) delete cart[key]; else cart[key] = qty;
+    refreshCard(itemId); // keep the menu-grid card in sync too
+    renderCartBar();
+    renderDrawer();
+  }
+
+  function renderDrawer(){
+    var s = cartSummary();
+
+    if (s.count === 0){
+      drawerBody.innerHTML =
+        '<div class="drawer-empty">' +
+          '<p>Tu carrito está vacío.</p>' +
+          '<button class="ghost-btn" id="goMenuBtn" type="button">Ver el menú</button>' +
+        '</div>';
+      var goMenuBtn = document.getElementById("goMenuBtn");
+      goMenuBtn.addEventListener("click", function(){
+        closeDrawer();
+        document.getElementById("menuGrid").scrollIntoView({behavior:"smooth", block:"start"});
+      });
+      return;
+    }
+
+    var rowsHtml = s.lines.map(function(l){
+      var qualifierParts = [];
+      var sizeQual = sizeQualifier(l.item, l.size);
+      if (sizeQual) qualifierParts.push(sizeQual);
+      if (l.friesLabel) qualifierParts.push(l.friesLabel);
+      var qualifier = qualifierParts.join(" · ");
+      var addonTxt = l.addon ? " + " + l.addon.label : "";
+      return (
+        '<div class="line-item" data-id="' + l.key + '">' +
+          '<div class="li-name"><strong>' + l.item.name + addonTxt + '</strong><span>' + (qualifier ? qualifier + ' · ' : '') + fmt(l.unit) + ' c/u</span></div>' +
+          '<div class="li-stepper">' +
+            '<button type="button" data-act="minus" aria-label="Quitar uno">–</button>' +
+            '<span class="n">' + l.qty + '</span>' +
+            '<button type="button" data-act="plus" aria-label="Agregar uno">+</button>' +
+          '</div>' +
+          '<div class="li-sub">' + fmt(l.sub) + '</div>' +
+        '</div>'
+      );
+    }).join("");
+
+    var deliveryChosen = order.deliveryMethod === "delivery";
+
+    drawerBody.innerHTML =
+      rowsHtml +
+      '<div class="drawer-total-row"><span class="label">Total</span><span class="amount">' + fmt(s.total) + '</span></div>' +
+      '<div class="drawer-actions-row"><button class="ghost-btn" id="clearCartBtn" type="button">Vaciar carrito</button></div>' +
+      '<div class="drawer-section" id="contactSection">' +
+        '<div class="drawer-section-title" style="margin-bottom:2px">Tus datos <span class="req-mark">(obligatorio)</span></div>' +
+        '<div class="maps-steps">Por si el pedido no llega por WhatsApp, así te podemos ubicar.</div>' +
+        '<div style="height:8px"></div>' +
+        '<label for="customerNameField">Nombre</label>' +
+        '<input class="field" id="customerNameField" type="text" autocomplete="name" placeholder="Tu nombre">' +
+        '<div style="height:10px"></div>' +
+        '<label for="customerPhoneField">Teléfono</label>' +
+        '<input class="field" id="customerPhoneField" type="tel" inputmode="tel" autocomplete="tel" placeholder="Ej: 2974 000000">' +
+        '<div class="geoloc-status" id="contactStatus" hidden></div>' +
+      '</div>' +
+      '<div class="drawer-section">' +
+        '<label for="notesField">Aclaraciones (opcional)</label>' +
+        '<textarea class="field" id="notesField" rows="2" placeholder="Ej: sin cebolla, sin tomate, poca sal…"></textarea>' +
+      '</div>' +
+      '<div class="drawer-section">' +
+        '<div class="drawer-section-title">¿Cómo querés recibir tu pedido?</div>' +
+        '<div class="delivery-options">' +
+          '<div class="delivery-opt' + (!deliveryChosen ? ' selected' : '') + '" data-method="pickup"><span class="emoji">📦</span>Retiro en el local</div>' +
+          '<div class="delivery-opt' + (deliveryChosen ? ' selected' : '') + '" data-method="delivery"><span class="emoji">🛵</span>Delivery</div>' +
+        '</div>' +
+      '</div>' +
+      (deliveryChosen ?
+        (function(){
+          var pinForMap = (order.pinPx && order.distanceKm) ? {
+            px: order.pinPx.x, py: order.pinPx.y,
+            km: parseFloat(order.distanceKm), fee: computeDeliveryFee(parseFloat(order.distanceKm))
+          } : null;
+          return (
+            '<div class="drawer-section" id="addressSection">' +
+              '<div class="drawer-section-title" style="margin-bottom:2px">¿Dónde te entregamos el pedido? <span class="req-mark">(obligatorio)</span></div>' +
+              '<div class="maps-steps">Buscá tu barrio y calculamos el envío al toque. ¿No aparece tu barrio? Marcá el punto directo en el mapa.</div>' +
+              '<div style="height:8px"></div>' +
+              '<label for="locationSearchInput">Barrio</label>' +
+              '<div class="combo-wrap">' +
+                '<input class="field" id="locationSearchInput" type="text" autocomplete="off" placeholder="Escribí tu barrio…" value="' + currentLocationLabel() + '">' +
+                '<div class="combo-options" id="locationOptions" hidden></div>' +
+              '</div>' +
+              '<div style="height:10px"></div>' +
+              '<div class="map-wrap' + (locationIsFixed() ? ' map-readonly' : '') + '" id="mapWrap">' + buildDeliveryMapSvg(pinForMap) + '</div>' +
+              '<div class="heat-legend">🟢 más cerca · 🟡 medio · 🔴 más lejos — mapa de calor aproximado, no oficial</div>' +
+              '<div class="geoloc-status" id="coordsStatus" hidden></div>' +
+              '<div class="delivery-fee-row" id="deliveryFeeRow" hidden><span>Envío</span><strong id="deliveryFeeAmount">$0</strong></div>' +
+              '<div class="delivery-fee-hint">Envío: base ' + fmt(DELIVERY_BASE_FARE) + ' + ' + fmt(DELIVERY_PER_KM) + '/km según la distancia al local. Barrio, cuadra y mapa son aproximados, no una dirección exacta.</div>' +
+              '<div style="height:14px"></div>' +
+              '<label for="addressNotesField">Dirección exacta <span class="req-mark">(obligatorio)</span></label>' +
+              '<textarea class="field" id="addressNotesField" rows="2" placeholder="Ej: calle y altura exacta, depto 3B, timbre, entre calles…"></textarea>' +
+              '<div class="geoloc-status" id="addressStatus" hidden></div>' +
+            '</div>'
+          );
+        })()
+        : '') +
+      '<div class="drawer-section">' +
+        '<div class="drawer-section-title">¿Cómo vas a pagar?</div>' +
+        '<div class="payment-options">' +
+          '<div class="payment-opt' + (order.paymentMethod !== "mercadopago" ? ' selected' : '') + '" data-payment="efectivo"><span class="emoji">💵</span>Pagar al recibir</div>' +
+          '<div class="payment-opt' + (order.paymentMethod === "mercadopago" ? ' selected mp-selected' : '') + '" data-payment="mercadopago"><span class="emoji">💳</span>Pagar online<br>(Mercado Pago)</div>' +
+        '</div>' +
+        '<div class="payment-hint">' + (order.paymentMethod === "mercadopago"
+          ? "Te vamos a redirigir a Mercado Pago para pagar de forma segura. Una vez pagado, confirmás el pedido por WhatsApp igual que siempre."
+          : "Pagás en efectivo o con lo que tengas disponible cuando retirás o te llega el pedido.") + '</div>' +
+      '</div>' +
+      (order.paymentMethod === "mercadopago"
+        ? '<button type="button" class="wa-btn mp-btn drawer-final-wa" id="drawerPayBtn">💳 Pagar con Mercado Pago</button>' +
+          '<div class="drawer-hint">Pago seguro con Mercado Pago. Después confirmás por WhatsApp.</div>'
+        : '<a class="wa-btn drawer-final-wa" id="drawerWaBtn" href="https://wa.me/' + WA_NUMBER + '" target="_blank" rel="noopener">' + waIconSvg + ' Pedir por WhatsApp</a>' +
+          '<div class="drawer-hint">Tu pedido se enviará directamente por WhatsApp.</div>');
+
+    // restore typed values from state so they survive a re-render
+    var customerNameField = document.getElementById("customerNameField");
+    var customerPhoneField = document.getElementById("customerPhoneField");
+    customerNameField.value = order.customerName;
+    customerPhoneField.value = order.customerPhone;
+    customerNameField.addEventListener("input", function(){ order.customerName = this.value; });
+    customerPhoneField.addEventListener("input", function(){ order.customerPhone = this.value; });
+
+    var notesField = document.getElementById("notesField");
+    notesField.value = order.notes;
+    notesField.addEventListener("input", function(){ order.notes = this.value; });
+
+    if (deliveryChosen){
+      var addressNotesField = document.getElementById("addressNotesField");
+      var locationSearchInput = document.getElementById("locationSearchInput");
+      var locationOptionsEl = document.getElementById("locationOptions");
+      var mapSvg = document.getElementById("deliveryMapSvg");
+      var coordsStatus = document.getElementById("coordsStatus");
+      var deliveryFeeRow = document.getElementById("deliveryFeeRow");
+      var deliveryFeeAmount = document.getElementById("deliveryFeeAmount");
+
+      addressNotesField.value = order.addressNotes;
+
+      function setCoordsStatus(text, isError){
+        coordsStatus.hidden = !text;
+        coordsStatus.textContent = text || "";
+        coordsStatus.classList.toggle("is-error", !!isError);
+      }
+
+      function refreshDeliveryFeeUI(){
+        var fee = computeDeliveryFee(parseFloat(order.distanceKm));
+        order.fee = fee;
+        deliveryFeeRow.hidden = fee == null;
+        if (fee != null) deliveryFeeAmount.textContent = fmt(fee);
+      }
+      refreshDeliveryFeeUI();
+      if (order.distanceKm){
+        var initLabel = order.barrioKey
+          ? "Barrio: " + getBarrio(order.barrioKey).name + " — " + order.distanceKm + " km."
+          : "Listo — distancia estimada: " + order.distanceKm + " km.";
+        setCoordsStatus(initLabel, false);
+      }
+
+      addressNotesField.addEventListener("input", function(){ order.addressNotes = this.value; });
+
+      function redrawMap(pinForMap){
+        var wrap = document.getElementById("mapWrap");
+        wrap.innerHTML = buildDeliveryMapSvg(pinForMap);
+        if (!locationIsFixed()) wireMapTap(document.getElementById("deliveryMapSvg"));
+      }
+
+      function placePinAt(clientX, clientY){
+        var pt = mapSvg.createSVGPoint();
+        pt.x = clientX; pt.y = clientY;
+        var loc = pt.matrixTransform(mapSvg.getScreenCTM().inverse());
+        var px = Math.max(0, Math.min(MAP_VIEWBOX.w, loc.x));
+        var py = Math.max(0, Math.min(MAP_VIEWBOX.h, loc.y));
+        var est = mapPointToEstimate(px, py);
+        order.pinPx = { x: px, y: py };
+        order.lat = est.lat; order.lng = est.lng;
+        order.distanceKm = est.km.toFixed(1);
+        refreshDeliveryFeeUI();
+        redrawMap({ px: px, py: py, km: est.km, fee: order.fee });
+        setCoordsStatus("Listo — distancia estimada: " + order.distanceKm + " km.", false);
+      }
+
+      function wireMapTap(svgEl){
+        svgEl.addEventListener("click", function(evt){
+          placePinAt(evt.clientX, evt.clientY);
+        });
+      }
+      if (!locationIsFixed()) wireMapTap(mapSvg);
+
+      function chooseLocation(raw){
+        order.barrioKey = "";
+        order.pinPx = null; order.lat = null; order.lng = null; order.distanceKm = ""; order.fee = null;
+        if (raw.indexOf("barrio:") === 0){
+          order.barrioKey = raw.slice("barrio:".length);
+          var barrio = getBarrio(order.barrioKey);
+          if (barrio){
+            var pt = computeBarrioPoint(barrio);
+            order.pinPx = { x: pt.px, y: pt.py };
+            order.lat = pt.lat; order.lng = pt.lng;
+            order.distanceKm = pt.km.toFixed(1);
+          }
+        }
+        renderDrawer();
+      }
+
+      // Searchable "Barrio o calle" combobox — a plain text input plus a
+      // filtered list underneath, since 79 entries in a native <select> was
+      // too much to scroll through on a phone.
+      var locationHighlight = -1;
+
+      function renderLocationOptions(query){
+        var q = normalizeSearch(query);
+        var matches = LOCATION_OPTIONS.filter(function(opt){
+          return !q || normalizeSearch(opt.label).indexOf(q) !== -1;
+        });
+        if (!matches.length){
+          locationOptionsEl.innerHTML = '<div class="combo-empty">Sin resultados — marcá el punto directo en el mapa</div>';
+          locationOptionsEl.hidden = false;
+          return;
+        }
+        var lastGroup = null;
+        var html = matches.map(function(opt, idx){
+          var groupHtml = opt.group && opt.group !== lastGroup
+            ? '<div class="combo-group">' + opt.group + '</div>'
+            : '';
+          lastGroup = opt.group || lastGroup;
+          return groupHtml +
+            '<div class="combo-option' + (idx === locationHighlight ? ' is-highlighted' : '') + '" data-value="' + opt.value + '" data-idx="' + idx + '">' + opt.label + '</div>';
+        }).join("");
+        locationOptionsEl.innerHTML = html;
+        locationOptionsEl.hidden = false;
+        locationOptionsEl._matches = matches;
+      }
+
+      function hideLocationOptions(){
+        locationOptionsEl.hidden = true;
+        locationHighlight = -1;
+      }
+
+      // Clicking (or tapping) an option must win over the input's blur —
+      // mousedown fires first, so we stop it from taking focus away before
+      // the click handler below gets to read which option was tapped.
+      locationOptionsEl.addEventListener("mousedown", function(evt){ evt.preventDefault(); });
+
+      locationOptionsEl.addEventListener("click", function(evt){
+        var target = evt.target.closest(".combo-option");
+        if (!target) return;
+        locationSearchInput.value = target.textContent;
+        hideLocationOptions();
+        chooseLocation(target.getAttribute("data-value"));
+      });
+
+      locationSearchInput.addEventListener("focus", function(){
+        renderLocationOptions(this.value);
+      });
+
+      locationSearchInput.addEventListener("input", function(){
+        locationHighlight = -1;
+        renderLocationOptions(this.value);
+      });
+
+      locationSearchInput.addEventListener("keydown", function(evt){
+        var matches = locationOptionsEl._matches || [];
+        if (evt.key === "ArrowDown"){
+          evt.preventDefault();
+          if (locationOptionsEl.hidden) { renderLocationOptions(this.value); return; }
+          locationHighlight = Math.min(locationHighlight + 1, matches.length - 1);
+          renderLocationOptions(this.value);
+        } else if (evt.key === "ArrowUp"){
+          evt.preventDefault();
+          locationHighlight = Math.max(locationHighlight - 1, 0);
+          renderLocationOptions(this.value);
+        } else if (evt.key === "Enter"){
+          evt.preventDefault();
+          if (locationHighlight >= 0 && matches[locationHighlight]){
+            var chosen = matches[locationHighlight];
+            locationSearchInput.value = chosen.label;
+            hideLocationOptions();
+            chooseLocation(chosen.value);
+          }
+        } else if (evt.key === "Escape"){
+          hideLocationOptions();
+          locationSearchInput.blur();
+        }
+      });
+
+      locationSearchInput.addEventListener("blur", function(){
+        hideLocationOptions();
+        // Free text that was never actually selected reverts to whatever
+        // was picked before (or blank) — the field always mirrors order state.
+        locationSearchInput.value = currentLocationLabel();
+      });
+
+    }
+
+    drawerBody.querySelectorAll(".line-item").forEach(function(row){
+      var key = row.getAttribute("data-id");
+      var parsed = parseKey(key);
+      row.querySelector('[data-act="minus"]').addEventListener("click", function(){
+        setQty(parsed.itemId, parsed.sizeKey, parsed.addonKey, parsed.friesKey, (cart[key] || 0) - 1);
+      });
+      row.querySelector('[data-act="plus"]').addEventListener("click", function(){
+        setQty(parsed.itemId, parsed.sizeKey, parsed.addonKey, parsed.friesKey, (cart[key] || 0) + 1);
+      });
+    });
+
+    drawerBody.querySelectorAll(".delivery-opt").forEach(function(opt){
+      opt.addEventListener("click", function(){
+        order.deliveryMethod = opt.getAttribute("data-method");
+        renderDrawer();
+      });
+    });
+
+    drawerBody.querySelectorAll(".payment-opt").forEach(function(opt){
+      opt.addEventListener("click", function(){
+        order.paymentMethod = opt.getAttribute("data-payment");
+        renderDrawer();
+      });
+    });
+
+    document.getElementById("clearCartBtn").addEventListener("click", function(){
+      cart = {};
+      ALL_ITEMS.forEach(function(item){ refreshCard(item.id); });
+      renderCartBar();
+      renderDrawer();
+    });
+
+    var drawerWaBtn = document.getElementById("drawerWaBtn");
+    if (drawerWaBtn) drawerWaBtn.addEventListener("click", goToWhatsApp);
+    var drawerPayBtn = document.getElementById("drawerPayBtn");
+    if (drawerPayBtn) drawerPayBtn.addEventListener("click", goToMercadoPago);
+  }
+
+  function openDrawer(){
+    renderDrawer();
+    scrim.classList.add("show");
+    drawer.classList.add("show");
+    document.body.style.overflow = "hidden";
+  }
+  function closeDrawer(){
+    scrim.classList.remove("show");
+    drawer.classList.remove("show");
+    document.body.style.overflow = "";
+  }
+
+  function openPhotoLightbox(src, name){
+    photoLightboxImg.src = src;
+    photoLightboxImg.alt = name;
+    photoLightboxCaption.textContent = name;
+    photoLightbox.classList.add("show");
+    document.body.style.overflow = "hidden";
+  }
+  function closePhotoLightbox(){
+    photoLightbox.classList.remove("show");
+    document.body.style.overflow = "";
+  }
+  photoLightboxClose.addEventListener("click", closePhotoLightbox);
+  photoLightbox.addEventListener("click", function(e){
+    if (e.target === photoLightbox) closePhotoLightbox();
+  });
+  document.addEventListener("keydown", function(e){
+    if (e.key === "Escape" && photoLightbox.classList.contains("show")) closePhotoLightbox();
+  });
+
+  function buildOrderPayload(s){
+    var items = s.lines.map(function(l){
+      var qualifierParts = [];
+      var sizeQual = sizeQualifier(l.item, l.size);
+      if (sizeQual) qualifierParts.push(sizeQual);
+      if (l.friesLabel) qualifierParts.push(l.friesLabel);
+      return {
+        name: l.item.name,
+        qualifier: qualifierParts.length ? qualifierParts.join(" · ") : null,
+        addon: l.addon ? l.addon.label : null,
+        qty: l.qty,
+        unit: l.unit,
+        sub: l.sub
+      };
+    });
+    var payload = {
+      items: items,
+      subtotal: s.total,
+      customerName: order.customerName.trim(),
+      customerPhone: order.customerPhone.trim(),
+      deliveryMethod: order.deliveryMethod,
+      paymentMethod: order.paymentMethod,
+      notes: order.notes.trim() || null,
+      barrio: null,
+      lat: null,
+      lng: null,
+      distanceKm: null,
+      deliveryFee: null,
+      addressNotes: null,
+      total: s.total
+    };
+    if (order.deliveryMethod === "delivery"){
+      var barrioForMsg = order.barrioKey ? getBarrio(order.barrioKey) : null;
+      var km = parseFloat(order.distanceKm);
+      var fee = computeDeliveryFee(km);
+      payload.barrio = barrioForMsg ? barrioForMsg.name : null;
+      payload.lat = order.lat;
+      payload.lng = order.lng;
+      payload.distanceKm = isNaN(km) ? null : km;
+      payload.deliveryFee = fee;
+      payload.addressNotes = order.addressNotes.trim() || null;
+      payload.total = fee != null ? s.total + fee : s.total;
+    }
+    return payload;
+  }
+
+  // Builds the same WhatsApp ticket-style message as before, now with an
+  // optional order number up top once the backend has assigned one, and an
+  // optional "ya pagado por Mercado Pago" line for online payments.
+  function buildTicketMessage(s, orderNumber, paidOnline){
+    var itemRows = s.lines.map(function(l){
+      var qualifierParts = [];
+      var sizeQual = sizeQualifier(l.item, l.size);
+      if (sizeQual) qualifierParts.push(sizeQual);
+      if (l.friesLabel) qualifierParts.push(l.friesLabel);
+      var qualifier = qualifierParts.join(" · ");
+      var addonTxt = l.addon ? " + " + l.addon.label : "";
+      return {
+        label: l.qty + "x " + l.item.name + addonTxt,
+        price: fmt(l.sub),
+        qualifier: qualifier
+      };
+    });
+    var totalLabel = "TOTAL", totalPrice = fmt(s.total);
+    var TICKET_GAP = 3; // min space between the shortest name and its price
+    var TICKET_WIDTH = itemRows.concat([{label:totalLabel, price:totalPrice}]).reduce(function(w, r){
+      return Math.max(w, r.label.length + r.price.length + TICKET_GAP);
+    }, 26);
+    TICKET_WIDTH = Math.min(TICKET_WIDTH, 40);
+    function padDots(label, priceStr){
+      var gap = TICKET_WIDTH - label.length - priceStr.length - 2;
+      if (gap < 1) gap = 1;
+      return label + " " + new Array(gap + 1).join(".") + " " + priceStr;
+    }
+    var ticketRows = [];
+    itemRows.forEach(function(r){
+      ticketRows.push(padDots(r.label, r.price));
+      if (r.qualifier) ticketRows.push("   " + r.qualifier);
+    });
+    ticketRows.push(new Array(TICKET_WIDTH + 1).join("-"));
+    ticketRows.push(padDots(totalLabel, totalPrice));
+    var ticketBlock = "```\n" + ticketRows.join("\n") + "\n```";
+
+    var header = orderNumber
+      ? "🧾 *PEDIDO N° " + orderNumber + " – PUNTO SANDWICH*\n\n"
+      : "🧾 *PEDIDO – PUNTO SANDWICH*\n\n";
+    var msg = header + ticketBlock;
+
+    if (order.customerName.trim() || order.customerPhone.trim()){
+      msg += "\n\n*Cliente:* " + (order.customerName.trim() || "-") + " · " + (order.customerPhone.trim() || "-");
+    }
+
+    msg += paidOnline
+      ? "\n\n*Pago:* ✅ Ya pagado online con Mercado Pago"
+      : "\n\n*Pago:* Al recibir el pedido";
+
+    if (order.notes.trim()){
+      msg += "\n\n*Aclaraciones:* " + order.notes.trim();
+    }
+
+    if (order.deliveryMethod === "delivery"){
+      msg += "\n\n*Entrega:* Delivery";
+      var barrioForMsg = order.barrioKey ? getBarrio(order.barrioKey) : null;
+      if (barrioForMsg){
+        msg += "\n*Barrio:* " + barrioForMsg.name;
+      }
+      msg += "\n*Dirección exacta:* " + (order.addressNotes.trim() || "-");
+      var km = parseFloat(order.distanceKm);
+      var fee = computeDeliveryFee(km);
+      if (fee != null){
+        msg += "\n*Distancia aprox:* " + km + " km";
+        msg += "\n*Envío:* " + fmt(fee);
+        msg += "\n*Total + envío:* " + fmt(s.total + fee);
+      }
+    } else {
+      msg += "\n\n*Entrega:* Retiro en el local";
+    }
+
+    return msg;
+  }
+
+  // Shared by both checkout paths (WhatsApp-only and Mercado Pago): checks
+  // the same required fields and scrolls to / flags whichever is missing.
+  // Returns true only when it's safe to submit the order.
+  function validateOrderBeforeSubmit(){
+    // Nombre y teléfono son obligatorios: es el respaldo para ubicar al
+    // cliente si el mensaje de WhatsApp no llega a destino.
+    if (!order.customerName.trim() || !order.customerPhone.trim()){
+      var contactSectionEl = document.getElementById("contactSection");
+      var contactStatus = document.getElementById("contactStatus");
+      if (contactStatus){
+        contactStatus.hidden = false;
+        contactStatus.textContent = "Completá tu nombre y teléfono — los necesitamos por si el pedido no llega por WhatsApp.";
+        contactStatus.classList.add("is-error");
+      }
+      if (contactSectionEl) contactSectionEl.scrollIntoView({behavior:"smooth", block:"center"});
+      return false;
+    }
+    var existingContactStatus = document.getElementById("contactStatus");
+    if (existingContactStatus) existingContactStatus.hidden = true;
+
+    // Delivery is required to mark a location before ordering — same idea as
+    // PedidosYa: no pinned point, no order (we can't compute the delivery fee
+    // without it, and there's no free-text address to fall back on).
+    if (order.deliveryMethod === "delivery" && (order.lat == null || !order.distanceKm)){
+      var mapWrapEl = document.getElementById("mapWrap");
+      var coordsStatus = document.getElementById("coordsStatus");
+      if (coordsStatus){
+        coordsStatus.hidden = false;
+        coordsStatus.textContent = "Elegí tu barrio o marcá el mapa para indicar dónde te entregamos el pedido — lo necesitamos para calcular el envío.";
+        coordsStatus.classList.add("is-error");
+      }
+      if (mapWrapEl) mapWrapEl.scrollIntoView({behavior:"smooth", block:"center"});
+      return false;
+    }
+
+    // La dirección exacta es obligatoria en delivery: ya no mandamos un link
+    // con las coordenadas, así que es la única forma de saber dónde entregar.
+    if (order.deliveryMethod === "delivery" && !order.addressNotes.trim()){
+      var addressNotesEl = document.getElementById("addressNotesField");
+      var addressStatus = document.getElementById("addressStatus");
+      if (addressStatus){
+        addressStatus.hidden = false;
+        addressStatus.textContent = "Escribí la dirección exacta (calle, altura, depto, etc.) — la necesitamos para el envío.";
+        addressStatus.classList.add("is-error");
+      }
+      if (addressNotesEl) addressNotesEl.scrollIntoView({behavior:"smooth", block:"center"});
+      return false;
+    }
+    var existingAddressStatus = document.getElementById("addressStatus");
+    if (existingAddressStatus) existingAddressStatus.hidden = true;
+
+    return true;
+  }
+
+  async function goToWhatsApp(e){
+    e.preventDefault();
+    if (SHOP_CLOSED){ showAlert("No estamos tomando pedidos en este momento. Escribinos por WhatsApp para consultas."); return; }
+    var s = cartSummary();
+    if (s.count === 0) return;
+    if (!validateOrderBeforeSubmit()) return;
+
+    // Open the destination tab synchronously, inside the click gesture —
+    // mobile browsers block window.open() called after an "await", so we
+    // grab the tab now and point it at the wa.me link once the order is saved.
+    var waWindow = null;
+    try { waWindow = window.open("", "_blank"); } catch (err) { waWindow = null; }
+
+    var btn = e.currentTarget;
+    var originalHtml = btn.innerHTML;
+    btn.classList.add("is-sending");
+    btn.innerHTML = "Enviando pedido…";
+
+    var orderNumber = null;
+    try {
+      var resp = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(buildOrderPayload(s))
+      });
+      if (resp.ok){
+        var data = await resp.json();
+        orderNumber = data.orderNumber;
+      }
+    } catch (err) {
+      // A hiccup saving the order should never stop someone from ordering —
+      // the WhatsApp message still goes out, just without a ticket number.
+    }
+
+    var msg = buildTicketMessage(s, orderNumber);
+    var url = "https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(msg);
+    if (waWindow && !waWindow.closed){
+      waWindow.location.href = url;
+    } else {
+      window.location.href = url;
+    }
+
+    btn.classList.remove("is-sending");
+    btn.innerHTML = originalHtml;
+  }
+
+  // "Pagar online" path: creates the order plus a Mercado Pago checkout
+  // ("preferencia") on the backend, then sends the customer's whole browser
+  // over to Mercado Pago to pay — same idea as goToWhatsApp above, but the
+  // destination is Mercado Pago's checkout instead of wa.me. The payment
+  // itself is only ever confirmed for real by functions/api/mp-webhook.js;
+  // this is just what starts the checkout and what the customer sees.
+  async function goToMercadoPago(e){
+    e.preventDefault();
+    if (SHOP_CLOSED){ showAlert("No estamos tomando pedidos en este momento. Escribinos por WhatsApp para consultas."); return; }
+    var s = cartSummary();
+    if (s.count === 0) return;
+    if (!validateOrderBeforeSubmit()) return;
+
+    var btn = e.currentTarget;
+    var originalHtml = btn.innerHTML;
+    btn.classList.add("is-sending");
+    btn.innerHTML = "Generando el pago…";
+
+    try {
+      var resp = await fetch("/api/create-preference", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(buildOrderPayload(s))
+      });
+      var data = await resp.json().catch(function(){ return {}; });
+      if (!resp.ok || !data.initPoint){
+        throw new Error((data && data.error) || "no se pudo generar el pago");
+      }
+
+      // Save the WhatsApp ticket message now, while the cart is still live —
+      // Mercado Pago sends the customer back with a full page reload, so by
+      // then the cart and contact fields are gone. sessionStorage survives
+      // that round trip on the same tab.
+      var msg = buildTicketMessage(s, data.orderNumber, true);
+      try {
+        sessionStorage.setItem("psPendingWaMsg_" + data.orderNumber, msg);
+      } catch (err) { /* private mode / storage full — not critical */ }
+
+      window.location.href = data.initPoint;
+    } catch (err) {
+      btn.classList.remove("is-sending");
+      btn.innerHTML = originalHtml;
+      showAlert('No se pudo iniciar el pago con Mercado Pago. Probá de nuevo, o elegí "Pagar al recibir".');
+    }
+  }
+
+  // If Mercado Pago just sent the customer back here (?pago=...&pedido=...),
+  // show what happened and, once paid, a button to confirm the order by
+  // WhatsApp the same way as always — Mercado Pago handles the payment,
+  // WhatsApp is still how the local finds out about the order.
+  function initPaymentReturn(){
+    var params = new URLSearchParams(window.location.search);
+    var pago = params.get("pago");
+    var pedido = params.get("pedido");
+    if (!pago || !pedido) return;
+
+    var box = document.getElementById("paymentResultBox");
+    var wrap = document.getElementById("paymentResultWrap");
+    if (!box || !wrap) return;
+
+    var savedMsg = null;
+    try { savedMsg = sessionStorage.getItem("psPendingWaMsg_" + pedido); } catch (err) { savedMsg = null; }
+
+    var waHtml = savedMsg
+      ? '<a class="wa-btn" href="https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(savedMsg) + '" target="_blank" rel="noopener">' + waIconSvg + ' Confirmar pedido por WhatsApp</a>'
+      : '<a class="wa-btn" href="https://wa.me/' + WA_NUMBER + '" target="_blank" rel="noopener">' + waIconSvg + ' Escribinos por WhatsApp</a>';
+
+    if (pago === "exito"){
+      box.className = "payment-result is-ok";
+      box.innerHTML =
+        '<h3>✅ ¡Pago recibido! — Pedido N° ' + pedido + '</h3>' +
+        '<p>Tu pago con Mercado Pago se realizó correctamente. Para que el local empiece a prepararlo, confirmalo por WhatsApp.</p>' +
+        waHtml;
+    } else if (pago === "pendiente"){
+      box.className = "payment-result is-pending";
+      box.innerHTML =
+        '<h3>⏳ Pago pendiente — Pedido N° ' + pedido + '</h3>' +
+        '<p>Tu pago todavía se está procesando — algunos medios tardan un rato en acreditarse. Te va a quedar el pedido guardado; mientras tanto podés avisarle al local por WhatsApp.</p>' +
+        waHtml;
+    } else {
+      box.className = "payment-result is-fail";
+      box.innerHTML =
+        '<h3>❌ El pago no se pudo procesar — Pedido N° ' + pedido + '</h3>' +
+        '<p>No te preocupes, no se descontó nada. Podés intentar de nuevo desde el carrito, o hacer el pedido pagando al recibir.</p>';
+    }
+    wrap.hidden = false;
+    wrap.scrollIntoView({behavior:"smooth", block:"start"});
+
+    try { sessionStorage.removeItem("psPendingWaMsg_" + pedido); } catch (err) {}
+
+    // Clean the URL so a refresh doesn't show this same screen again.
+    window.history.replaceState({}, "", window.location.pathname);
+  }
+
+  cartChipBtn.addEventListener("click", openDrawer);
+  viewOrderBtn.addEventListener("click", openDrawer);
+  drawerClose.addEventListener("click", closeDrawer);
+  scrim.addEventListener("click", closeDrawer);
+
+  checkShopStatus();
+  applyHiddenProducts();
+  initPaymentReturn();
+  renderCartBar();
+})();
+</script>
+
+</body>
+</html>
